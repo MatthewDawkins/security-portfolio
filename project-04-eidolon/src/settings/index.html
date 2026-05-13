@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eidolon — Settings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0c10;
+      color: #e2e8f0;
+      font-size: 13px;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 28px;
+      background: #0f1117;
+      border-bottom: 1px solid #1e2230;
+    }
+    header img { width: 32px; height: 32px; }
+    header h1 { font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
+    header h1 span { color: #00d4aa; }
+
+    main {
+      max-width: 520px;
+      margin: 32px auto;
+      padding: 0 28px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: #0f1117;
+      border: 1px solid #1e2230;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #141720;
+    }
+    .setting-row:last-child { border-bottom: none; }
+
+    .setting-info { flex: 1; }
+    .setting-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #e2e8f0;
+      margin-bottom: 3px;
+    }
+    .setting-desc {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* Toggle switch */
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #2a2d3a;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #94a3b8;
+      border-radius: 50%;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .switch input:checked + .slider { background: #00d4aa33; }
+    .switch input:checked + .slider::before {
+      transform: translateX(18px);
+      background: #00d4aa;
+    }
+
+    .note {
+      background: #0f1117;
+      border: 1px solid #1e2230;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+    .note strong { color: #94a3b8; }
+
+    .status-bar {
+      height: 2px;
+      background: transparent;
+      transition: background 0.3s;
+      margin-bottom: 0;
+    }
+    .status-bar.saving { background: #00d4aa; animation: pulse 0.6s ease-out forwards; }
+    @keyframes pulse {
+      0%   { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .reload-btn {
+      margin-top: 10px;
+      background: #141720;
+      border: 1px solid #1e2230;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 12px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .reload-btn:hover { border-color: #00d4aa; color: #00d4aa; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="Eidolon">
+    <h1>Eid<span>olon</span> — Settings</h1>
+  </header>
+
+  <main>
+    <div class="section-title">Protection features</div>
+    <div class="card">
+      <div class="status-bar" id="status-bar"></div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Block Trackers</div>
+          <div class="setting-desc">Block network requests to known tracking and advertising domains using declarative rules.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="blockTrackers">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Spoof Canvas Fingerprint</div>
+          <div class="setting-desc">Add imperceptible per-session noise to canvas output so each session produces a unique fingerprint.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="spoofCanvas">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Block WebRTC IP Leak</div>
+          <div class="setting-desc">Force relay-only ICE transport on WebRTC connections to prevent your real IP from being exposed.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="blockWebRTC">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Note:</strong> Canvas and WebRTC changes take effect on the <strong>next page load</strong> for already-open tabs. Tracker blocking takes effect immediately.
+      <br><br>
+      <button class="reload-btn" id="reload-btn">Reload all open tabs</button>
+    </div>
+  </main>
+
+  <script src="settings.js"></script>
+</body>
+</html>

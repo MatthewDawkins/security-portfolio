@@ -1,0 +1,21 @@
+{
+  "name": "eidolon",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser privacy extension — block fingerprinting, trackers, and WebRTC IP leaks. A Mieza project.",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --config webpack.config.js --watch",
+    "dev:firefox": "npm run build && web-ext run --source-dir dist --firefox-profile privacy-shield-dev",
+    "dev:chrome": "npm run build"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "copy-webpack-plugin": "^12.0.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "web-ext": "^8.2.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

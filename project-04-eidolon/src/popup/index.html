@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eidolon</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 300px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      font-size: 13px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #1e2230;
+    }
+    .header img { width: 28px; height: 28px; }
+    .header h1 { font-size: 15px; font-weight: 600; flex: 1; letter-spacing: 0.3px; }
+
+    .toggle {
+      background: none;
+      border: 2px solid #00d4aa;
+      border-radius: 20px;
+      color: #00d4aa;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .toggle:hover { background: #00d4aa; color: #0f1117; }
+    .toggle.off { border-color: #4a5568; color: #4a5568; }
+    .toggle.off:hover { background: #4a5568; color: #0f1117; }
+
+    /* Status bar */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #141720;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #00d4aa;
+      box-shadow: 0 0 6px #00d4aa88;
+    }
+    .dot.off { background: #4a5568; box-shadow: none; }
+
+    /* Stats grid */
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: #1e2230;
+      border-top: 1px solid #1e2230;
+      border-bottom: 1px solid #1e2230;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 8px;
+      background: #0f1117;
+      gap: 4px;
+    }
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #00d4aa;
+      line-height: 1;
+    }
+    .stat-value.inactive { color: #4a5568; }
+    .stat-label {
+      font-size: 10px;
+      color: #64748b;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* Blocked list preview */
+    .blocked-list {
+      max-height: 130px;
+      overflow-y: auto;
+    }
+    .blocked-list::-webkit-scrollbar { width: 4px; }
+    .blocked-list::-webkit-scrollbar-track { background: #0f1117; }
+    .blocked-list::-webkit-scrollbar-thumb { background: #2a2d3a; border-radius: 2px; }
+
+    .blocked-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 16px;
+      border-bottom: 1px solid #141720;
+      font-size: 11px;
+    }
+    .blocked-item:last-child { border-bottom: none; }
+    .blocked-dot { width: 5px; height: 5px; border-radius: 50%; background: #f56565; flex-shrink: 0; }
+    .blocked-domain { color: #e2e8f0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .blocked-type { color: #4a5568; font-size: 10px; flex-shrink: 0; }
+
+    .empty-state {
+      padding: 16px;
+      text-align: center;
+      color: #4a5568;
+      font-size: 11px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 10px 16px;
+      display: flex;
+      gap: 6px;
+    }
+    .dashboard-btn {
+      flex: 1;
+      background: #141720;
+      border: 1px solid #1e2230;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 12px;
+      padding: 7px 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .dashboard-btn:hover { border-color: #00d4aa; color: #00d4aa; }
+    .settings-btn {
+      background: #141720;
+      border: 1px solid #1e2230;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 14px;
+      padding: 7px 10px;
+      cursor: pointer;
+      line-height: 1;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .settings-btn:hover { border-color: #00d4aa; color: #00d4aa; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="icons/icon48.png" alt="Eidolon">
+    <h1>Eidolon</h1>
+    <button class="toggle" id="toggle">ON</button>
+  </div>
+
+  <div class="status" id="status">
+    <div class="dot" id="dot"></div>
+    <span id="status-text">Protected</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-value" id="blocked-count">0</span>
+      <span class="stat-label">Blocked<br>this page</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="canvas-val">✓</span>
+      <span class="stat-label">Canvas<br>spoofed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="webrtc-val">✓</span>
+      <span class="stat-label">WebRTC<br>protected</span>
+    </div>
+  </div>
+
+  <div class="blocked-list" id="blocked-list">
+    <div class="empty-state" id="empty-state">No trackers blocked yet on this page.</div>
+  </div>
+
+  <div class="footer">
+    <button class="dashboard-btn" id="dashboard-btn">View full request log &rarr;</button>
+    <button class="settings-btn" id="settings-btn" title="Settings">&#9881;</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

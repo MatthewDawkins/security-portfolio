@@ -1,16 +1,16 @@
-# Project 01 - SSH Brute Force Detection & Response
+# Project 01 — SSH Brute Force Detection & Response
 
-# Overiew
-This project simulates and investigates an SSH brute-force attack against a Linux host. The attack was generated from a seperate machine, analyzed using system athentication logs, and contained using Fail2Ban.
+## Overview
+This project simulates and investigates an SSH brute-force attack against a Linux host. The attack was generated from a separate machine, analyzed using system authentication logs, and contained using Fail2Ban.
 
 ## Environment
-- Attacker: Kali Linux
-- Target : Ubuntu Linux
-- Service: OpenSSH
-- Network: Host-only VirtualBox lab
+- **Attacker:** Kali Linux
+- **Target:** Ubuntu Linux
+- **Service:** OpenSSH
+- **Network:** Host-only VirtualBox lab
 
-# Detection
-- Analyzed '/var/log/auth.log' for repeated SSH authentication failures
+## Detection
+- Analyzed `/var/log/auth.log` for repeated SSH authentication failures
 - Identified attack source IP and targeted user account
 - Correlated events over time to confirm brute-force behavior
 
@@ -20,8 +20,8 @@ This project simulates and investigates an SSH brute-force attack against a Linu
 - Verified ban and safely removed it after investigation
 
 ## Artifacts
-- 'ssh_bruteforce_summary.sh' - Bash script to summarize failed SSH attempts
-- 'ssh_bruteforce_incident_report.md' - Incident report documenting analysis and response
+- `ssh_bruteforce_summary.sh` — Bash script to summarize failed SSH attempts
+- `ssh_bruteforce_incident_report.md` — Incident report documenting analysis and response
 
 ## Skills Demonstrated
 - Linux log analysis
@@ -29,4 +29,4 @@ This project simulates and investigates an SSH brute-force attack against a Linu
 - Incident response lifecycle
 - Brute-force attack detection
 - Host-based security controls (Fail2Ban)
-- MITRE ATT&CK mapping (t1110 - Brute Force)
+- MITRE ATT&CK mapping (T1110 — Brute Force)
