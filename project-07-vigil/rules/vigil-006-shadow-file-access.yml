@@ -1,0 +1,35 @@
+title: Sensitive Credential File Accessed
+id: vigil-006
+status: stable
+description: >
+  Detects direct read access to /etc/shadow or /etc/passwd. These files contain
+  password hashes and user account information. Access by non-root processes or
+  unexpected users indicates a credential dumping attempt.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.credential_access
+  - attack.t1003.008
+logsource:
+  category: file
+  product: linux
+type: match
+detection:
+  selection:
+    event_type: file_access
+    file_path|contains: /etc/shadow
+  condition: selection
+falsepositives:
+  - Legitimate system tools (passwd, shadow-utils) during password changes
+  - Backup systems reading /etc/shadow for system state snapshots
+  - Security scanners with appropriate permissions
+level: high
+mitre:
+  technique: T1003.008
+  tactic: Credential Access
+  name: OS Credential Dumping - /etc/passwd and /etc/shadow
+tuning_notes: >
+  Almost all false positives come from known system processes. Consider
+  enriching events with the calling process name and allowlisting
+  passwd, chage, shadow-utils, and your backup agent. Unexpected reads
+  by shells, python, or curl are critical severity regardless of user.

@@ -1,0 +1,40 @@
+title: Privilege Escalation via Sudo - Failure Then Success
+id: vigil-012
+status: stable
+description: >
+  Detects a privilege escalation pattern: sudo authentication failures followed
+  by a successful sudo command from the same user within 2 minutes. An attacker
+  who has gained shell access may attempt sudo with guessed or previously captured
+  credentials, eventually succeeding.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.privilege_escalation
+  - attack.t1548.003
+logsource:
+  category: authentication
+  product: linux
+type: sequence
+detection:
+  sequence:
+    steps: [sudo_fail, sudo_success]
+    correlate: user
+    maxspan: 120
+  sudo_fail:
+    event_type: sudo_failure
+  sudo_success:
+    event_type: sudo_success
+  condition: sudo_fail then sudo_success
+falsepositives:
+  - User mistyping sudo password then entering it correctly
+  - Legitimate admins running sudo after a session timeout
+level: high
+mitre:
+  technique: T1548.003
+  tactic: Privilege Escalation
+  name: Abuse Elevation Control Mechanism - Sudo and Sudo Caching
+tuning_notes: >
+  Most benign sudo failures are isolated - a single failure followed by success
+  within 2 minutes is worth alerting. Raise severity to critical if the user is
+  not in the expected sudoers group, or if the preceding session was established
+  via SSH from an external IP (correlate with vigil-011 output).

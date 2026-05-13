@@ -1,10 +1,19 @@
 # Security Portfolio — Matthew Dawkins
 
-Hands-on security projects spanning offensive tooling, browser security engineering, SOC analysis, incident response, and detection automation.
+Hands-on security projects spanning offensive tooling, detection engineering, browser security, adversary simulation, SOC analysis, and incident response.
 
 ---
 
 ## Projects
+
+### [Project 07 — Vigil Detection Rule Engine](./project-07-vigil)
+`Python` `Detection Engineering` `SIEM` `MITRE ATT&CK` `Sigma` `Threat Detection`
+
+A Sigma-compatible Python detection rule engine that ingests structured log events and evaluates three rule types: stateless field-match, sliding-window threshold (per-group deque with de-duplication), and ordered multi-step sequence (per-correlate state machine with maxspan expiry). Ships with 15 production-tuned rules covering SSH brute force, password spray, lateral movement, privilege escalation, credential dumping, C2 beaconing, and persistence — each mapped to a MITRE ATT&CK technique with documented false positive analysis and tuning guidance. Generates a self-contained dark-theme HTML report with tactic breakdown, technique pills, and a full alert timeline.
+
+**Demo:** [vigil-demo.html](./project-07-vigil/reports/vigil-demo.html) — 81 events, 25 alerts, 2 CRITICAL, 11 HIGH across all 15 rules.
+
+---
 
 ### [Project 06 — Phronesis Adversary Simulation](./project-06-phronesis)
 `Python` `Game Theory` `Nash Equilibrium` `Mieza GTO` `Security Decision Modelling`
@@ -58,6 +67,7 @@ Built a Python script to parse Linux SSH authentication logs, detect repeated fa
 
 | Area | Tools & Technologies |
 |---|---|
+| Detection Engineering | SIEM rule authoring, Sigma-compatible YAML, threshold/sequence correlation, MITRE ATT&CK mapping |
 | Game Theory / Decision Science | Nash equilibrium, mixed strategies, adversarial modelling, normal-form games |
 | Offensive Tooling | Web vulnerability scanning, crawling, payload injection, XSS/SQLi/traversal detection |
 | Security Engineering | Chrome MV3, TypeScript, browser APIs, fingerprinting mitigations |

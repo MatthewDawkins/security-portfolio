@@ -1,0 +1,41 @@
+title: Persistence Backdoor Chain - New User Followed by Cron Modification
+id: vigil-015
+status: stable
+description: >
+  Detects a persistence establishment chain: creation of a new local user account
+  followed by modification of cron jobs on the same host within 10 minutes.
+  Attackers establishing persistence will create a backdoor account and add
+  scheduled tasks to ensure re-entry even if the initial access vector is closed.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.persistence
+  - attack.t1136.001
+  - attack.t1053.003
+logsource:
+  category: authentication
+  product: linux
+type: sequence
+detection:
+  sequence:
+    steps: [new_user, cron_change]
+    correlate: host
+    maxspan: 600
+  new_user:
+    event_type: user_created
+  cron_change:
+    event_type: cron_modified
+  condition: new_user then cron_change
+falsepositives:
+  - Automated provisioning scripts that create service accounts and configure their cron tasks
+  - System administrators setting up new application accounts with scheduled maintenance jobs
+level: high
+mitre:
+  technique: T1136.001
+  tactic: Persistence
+  name: Create Account - Local Account
+tuning_notes: >
+  Provisioning pipelines are the primary FP source. Allowlist known automation
+  user accounts (e.g. ansible, puppet, chef service accounts) and deployment
+  hosts. The combination of both TTPs on the same host within 10 minutes is
+  unusual enough to warrant investigation even with automation in place.

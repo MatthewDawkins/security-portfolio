@@ -1,0 +1,34 @@
+title: New Local User Account Created
+id: vigil-004
+status: stable
+description: >
+  Detects creation of a new local user account. Attackers create local accounts
+  to establish persistence, especially after gaining initial root access.
+  Any unexpected account creation should be investigated.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.persistence
+  - attack.t1136.001
+logsource:
+  category: authentication
+  product: linux
+type: match
+detection:
+  selection:
+    event_type: user_created
+  condition: selection
+falsepositives:
+  - Legitimate system administration creating service accounts
+  - Automated provisioning systems (Ansible, Terraform, cloud-init)
+  - Onboarding of new employees via automation
+level: medium
+mitre:
+  technique: T1136.001
+  tactic: Persistence
+  name: Create Account - Local Account
+tuning_notes: >
+  In environments using automated provisioning, this will fire frequently.
+  Consider allowlisting known provisioning source IPs or users (e.g. ansible
+  service account). Any account creation outside business hours warrants
+  immediate investigation regardless of source.

