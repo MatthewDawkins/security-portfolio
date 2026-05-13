@@ -1,17 +1,26 @@
 # Security Portfolio — Matthew Dawkins
 
-Hands-on security projects spanning offensive tooling, detection engineering, browser security, adversary simulation, SOC analysis, and incident response.
+Hands-on security projects spanning cloud security, offensive tooling, detection engineering, browser security, adversary simulation, SOC analysis, and incident response.
 
 ---
 
 ## Projects
 
-### [Project 07 — Vigil Detection Rule Engine](./project-07-vigil)
+### [Project 08 — Aether AWS Cloud Security Scanner](./project-08-aether)
+`Python` `Cloud Security` `AWS` `IAM` `MITRE ATT&CK` `Security Posture`
+
+A Python CLI that audits AWS accounts for misconfigurations across IAM, S3, EC2, RDS, CloudTrail, and VPC — 21 checks covering the most impactful cloud security risks. Every finding is ranked by severity, mapped to a MITRE ATT&CK technique, and paired with actionable remediation guidance. Generates a self-contained HTML report. Includes a mock mode for demonstration without live credentials.
+
+**Demo:** [aether-demo.html](./project-08-aether/reports/aether-demo.html) — 21 findings: 4 CRITICAL, 8 HIGH, 7 MEDIUM, 2 LOW across a simulated misconfigured account.
+
+---
+
+### [Project 07 — Argus Detection Rule Engine](./project-07-argus)
 `Python` `Detection Engineering` `SIEM` `MITRE ATT&CK` `Sigma` `Threat Detection`
 
 A Sigma-compatible Python detection rule engine that ingests structured log events and evaluates three rule types: stateless field-match, sliding-window threshold (per-group deque with de-duplication), and ordered multi-step sequence (per-correlate state machine with maxspan expiry). Ships with 15 production-tuned rules covering SSH brute force, password spray, lateral movement, privilege escalation, credential dumping, C2 beaconing, and persistence — each mapped to a MITRE ATT&CK technique with documented false positive analysis and tuning guidance. Generates a self-contained dark-theme HTML report with tactic breakdown, technique pills, and a full alert timeline.
 
-**Demo:** [vigil-demo.html](./project-07-vigil/reports/vigil-demo.html) — 81 events, 25 alerts, 2 CRITICAL, 11 HIGH across all 15 rules.
+**Demo:** [argus-demo.html](./project-07-argus/reports/argus-demo.html) — 81 events, 25 alerts, 2 CRITICAL, 11 HIGH across all 15 rules.
 
 ---
 
@@ -67,6 +76,7 @@ Built a Python script to parse Linux SSH authentication logs, detect repeated fa
 
 | Area | Tools & Technologies |
 |---|---|
+| Cloud Security | AWS IAM/S3/EC2/RDS/CloudTrail/VPC auditing, security posture management, misconfiguration detection |
 | Detection Engineering | SIEM rule authoring, Sigma-compatible YAML, threshold/sequence correlation, MITRE ATT&CK mapping |
 | Game Theory / Decision Science | Nash equilibrium, mixed strategies, adversarial modelling, normal-form games |
 | Offensive Tooling | Web vulnerability scanning, crawling, payload injection, XSS/SQLi/traversal detection |

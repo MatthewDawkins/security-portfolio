@@ -1,0 +1,37 @@
+title: SSH Brute Force
+id: argus-001
+status: stable
+description: >
+  Detects multiple failed SSH authentication attempts from a single source IP
+  within a short time window, indicating a password-guessing campaign.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.credential_access
+  - attack.t1110.001
+logsource:
+  category: authentication
+  product: linux
+type: threshold
+detection:
+  selection:
+    event_type: auth_failure
+    service: sshd
+  threshold:
+    field: src_ip
+    count: 5
+    timewindow: 60
+  condition: selection | threshold
+falsepositives:
+  - Misconfigured automation or deployment scripts with hardcoded credentials
+  - Password manager sync failures causing repeated login attempts
+  - Legitimate remote workers with unstable connections
+level: high
+mitre:
+  technique: T1110.001
+  tactic: Credential Access
+  name: Brute Force - Password Guessing
+tuning_notes: >
+  Raise threshold to 10 for environments with high volumes of remote SSH access
+  (e.g. cloud environments with many ephemeral workers). Lower to 3 for
+  high-security environments. Consider allowlisting known CI/CD runner IPs.

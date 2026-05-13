@@ -1,0 +1,42 @@
+title: Potential C2 Beacon - Repeated Outbound Connections
+id: argus-009
+status: test
+description: >
+  Detects repeated outbound network connections from an internal host to the
+  same external destination. C2 frameworks (Cobalt Strike, Metasploit, custom
+  implants) establish regular beacon intervals to maintain command channel
+  availability. 8+ connections to the same dest within 15 minutes is anomalous.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.command_and_control
+  - attack.t1071.001
+logsource:
+  category: network
+  product: linux
+type: threshold
+detection:
+  selection:
+    event_type: network_conn
+    direction: outbound
+  threshold:
+    field: dest_ip
+    count: 8
+    timewindow: 900
+  condition: selection | threshold
+falsepositives:
+  - Legitimate polling applications (monitoring agents, update checkers)
+  - Chat clients with frequent heartbeat connections
+  - CDN-backed services with keep-alive reconnects
+  - Browser pre-fetch / speculative connections
+level: medium
+mitre:
+  technique: T1071.001
+  tactic: Command and Control
+  name: Application Layer Protocol - Web Protocols
+tuning_notes: >
+  This rule has the highest FP rate of the bundle. Reduce noise by adding a
+  dest_ip allowlist for known CDNs, monitoring services, and update endpoints.
+  High confidence when combined with: unusual dest_ip (threat intel), non-browser
+  process, outside business hours, or following a compromise indicator from
+  another rule. Consider raising the count threshold to 15 in chatty environments.

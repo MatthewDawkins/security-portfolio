@@ -1,0 +1,37 @@
+title: Web Application Authentication Brute Force
+id: argus-008
+status: stable
+description: >
+  Detects high-frequency HTTP 401 Unauthorized responses to a single source IP,
+  indicating credential stuffing or brute force against a web application login endpoint.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.credential_access
+  - attack.t1110
+logsource:
+  category: webserver
+  product: linux
+type: threshold
+detection:
+  selection:
+    event_type: http_auth_failure
+  threshold:
+    field: src_ip
+    count: 10
+    timewindow: 60
+  condition: selection | threshold
+falsepositives:
+  - Misconfigured API clients sending expired tokens
+  - Mobile apps with stale session tokens making repeated requests
+  - Legitimate users who forgot their password attempting multiple resets
+level: medium
+mitre:
+  technique: T1110
+  tactic: Credential Access
+  name: Brute Force
+tuning_notes: >
+  10 failures per minute is conservative for high-traffic web applications.
+  Tune based on your authentication endpoint's normal traffic volume.
+  For admin panels or VPNs, lower to 3-5 failures. Correlate with user-agent
+  strings — credential stuffing tools have distinctive UAs.

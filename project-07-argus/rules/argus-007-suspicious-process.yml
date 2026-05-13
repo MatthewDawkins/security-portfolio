@@ -1,0 +1,41 @@
+title: Suspicious Process Execution
+id: argus-007
+status: stable
+description: >
+  Detects execution of processes commonly used for post-exploitation:
+  netcat (nc/ncat), socat, base64 encoding (often used to obfuscate payloads),
+  and reverse shell utilities. Legitimate use is rare in production environments.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.execution
+  - attack.t1059.004
+logsource:
+  category: process
+  product: linux
+type: match
+detection:
+  selection:
+    event_type: process_exec
+    process:
+      - nc
+      - ncat
+      - netcat
+      - socat
+      - base64
+      - mkfifo
+  condition: selection
+falsepositives:
+  - Developers using netcat for debugging or testing network connectivity
+  - base64 used legitimately for encoding configuration data
+  - Security tooling running authorised exercises
+level: high
+mitre:
+  technique: T1059.004
+  tactic: Execution
+  name: Command and Scripting Interpreter - Unix Shell
+tuning_notes: >
+  base64 is the highest-FP entry here — consider removing it or restricting
+  to specific directories (/tmp, /dev/shm) where it's more anomalous.
+  nc and socat are low FP in production but common in dev environments.
+  Correlate with user account and whether the account was recently authenticated.

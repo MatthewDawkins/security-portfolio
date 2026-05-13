@@ -1,0 +1,42 @@
+title: SSH Lateral Movement Chain
+id: argus-011
+status: stable
+description: >
+  Detects a lateral movement pattern: SSH authentication failures followed by
+  a successful SSH login from the same source IP within 5 minutes. This two-step
+  sequence indicates an attacker who successfully brute-forced or credential-stuffed
+  their way into a new host after initial failures.
+author: Matthew Dawkins
+date: 2026/05/13
+tags:
+  - attack.lateral_movement
+  - attack.t1021.004
+logsource:
+  category: authentication
+  product: linux
+type: sequence
+detection:
+  sequence:
+    steps: [failed_ssh, successful_ssh]
+    correlate: src_ip
+    maxspan: 300
+  failed_ssh:
+    event_type: auth_failure
+    service: sshd
+  successful_ssh:
+    event_type: auth_success
+    service: sshd
+  condition: failed_ssh then successful_ssh
+falsepositives:
+  - User mistyping password then logging in successfully
+  - Key authentication fallback after password failure
+level: critical
+mitre:
+  technique: T1021.004
+  tactic: Lateral Movement
+  name: Remote Services - SSH
+tuning_notes: >
+  Single failure -> success is high FP. Consider requiring at least 3 failures
+  before the success (combine with vigil-001 threshold rule). Critical severity
+  when the destination host differs from the attacker's previously observed hosts,
+  or when occurring outside business hours.
