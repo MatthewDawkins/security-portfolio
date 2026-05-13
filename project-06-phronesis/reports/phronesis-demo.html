@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phronesis — Adversary Simulation Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; padding: 2rem; max-width: 960px; margin: 0 auto; }
+  .header { border-bottom: 1px solid #222; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .header h1 { font-size: 1.6rem; font-weight: 700; color: #fff; }
+  .header h1 span { color: #7c3aed; }
+  .meta { color: #555; font-size: .85rem; margin-top: .4rem; }
+  .tagline { color: #444; font-size: .82rem; margin-top: .6rem; font-style: italic; }
+  .summary { display: flex; gap: 1.5rem; margin: 2rem 0; flex-wrap: wrap; }
+  .stat { text-align: center; background: #111; border: 1px solid #1e1e1e; border-radius: 8px; padding: .8rem 1.2rem; }
+  .scenario { background: #111; border-radius: 8px; padding: 1.4rem; margin-bottom: 1.5rem; border-left: 3px solid #7c3aed; }
+  .scenario-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+  .scenario-num { background: #7c3aed; color: #fff; font-size: .75rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .scenario-title { font-weight: 600; color: #f0f0f0; font-size: .95rem; }
+  .section-label { color: #555; font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; margin-top: 1rem; margin-bottom: .4rem; }
+  .rec-box { background: #0d0d0d; border-radius: 6px; padding: .9rem 1rem; margin-top: .3rem; }
+  .rec-box.defender { border-left: 2px solid #7c3aed; }
+  .rec-box.attacker { border-left: 2px solid #ff8800; }
+  .rec-action { font-size: .85rem; font-weight: 600; color: #ccc; margin-bottom: .4rem; }
+  .rec-rationale { font-size: .83rem; color: #888; line-height: 1.6; }
+  .interpretation { font-size: .84rem; color: #999; line-height: 1.7; background: #0d0d0d; border-radius: 6px; padding: .9rem 1rem; border-left: 2px solid #333; }
+  footer { margin-top: 3rem; color: #333; font-size: .75rem; border-top: 1px solid #1a1a1a; padding-top: 1rem; }
+  footer a { color: #555; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1><span>Phronesis</span> — Adversary Simulation Report</h1>
+  <div class="meta">2026-05-13 21:57 UTC &nbsp;|&nbsp; 4 scenarios analysed &nbsp;|&nbsp; Powered by <a href="https://mieza.ai" style="color:#7c3aed;text-decoration:none">Mieza GTO</a></div>
+  <div class="tagline">Nash equilibrium strategies for defender resource allocation — computed via Counterfactual Regret Minimization</div>
+</div>
+
+<div class="summary">
+  <div class="stat">
+    <span style="color:#7c3aed;font-size:1.8rem;font-weight:700">4</span><br>
+    <span style="color:#888;font-size:.75rem;text-transform:uppercase">Scenarios</span>
+  </div>
+  <div class="stat">
+    <span style="color:#e0e0e0;font-size:1.8rem;font-weight:700">8</span><br>
+    <span style="color:#888;font-size:.75rem;text-transform:uppercase">Actions Modelled</span>
+  </div>
+  <div class="stat">
+    <span style="color:#4ade80;font-size:1.8rem;font-weight:700">4</span><br>
+    <span style="color:#888;font-size:.75rem;text-transform:uppercase">Mixed Equilibria</span>
+  </div>
+</div>
+
+
+<div class="scenario" id="scenario-1">
+  <div class="scenario-header">
+    <span class="scenario-num">1</span>
+    <div>
+      <div class="scenario-title">PATCH — Optimal patch cadence vs. an adaptive exploit-timing adversary</div>
+      <div style="margin-top:.3rem"><span style="color:#555;font-size:.78rem;margin-right:1rem">breach_cost: <span style="color:#888">100</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">patch_cost: <span style="color:#888">20</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">exploit_gain: <span style="color:#888">80</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">attack_cost: <span style="color:#888">15</span></span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Payoff Matrix</div>
+  <div style="margin:.5rem 0"><div style="font-size:.7rem;color:#555;margin-bottom:.4rem"><span style="color:#ff8800">Defender</span> (row) vs <span style="color:#7c3aed">Attacker</span> (col) — values shown as (defender, attacker)</div><table style="border-collapse:collapse"><tr><th></th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Exploit</th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Wait</th></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Patch</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-20</span><span style="color:#444">, </span><span style="color:#ff6666">-15</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-20</span><span style="color:#444">, </span><span style="color:#4ade80">0</span></td></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Defer</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-100</span><span style="color:#444">, </span><span style="color:#4ade80">80</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#4ade80">0</span><span style="color:#444">, </span><span style="color:#4ade80">0</span></td></tr></table></div>
+
+  <div class="section-label" style="margin-top:1.2rem">Nash Equilibrium  <span style="color:#444;font-size:.7rem;font-weight:400">(support-enumeration, 2ms)</span></div>
+  <table style="border-collapse:collapse;margin:.5rem 0"><tr><td style="color:#7c3aed;font-weight:600;padding-right:1.5rem">Defender</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:151px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Patch</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">84.2%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:28px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Defer</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">15.8%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = -20.00</td></tr><tr><td style="color:#ff8800;font-weight:600;padding-right:1.5rem">Attacker</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:144px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Wait</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">80.0%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:36px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Exploit</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">20.0%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = -0.00</td></tr></table>
+
+  <div class="section-label" style="margin-top:1.2rem">Defender Recommendation</div>
+  <div class="rec-box defender">
+    <div class="rec-action">
+      Recommended: <span style="color:#7c3aed">Patch</span>
+    </div>
+    <div class="rec-rationale">Apply patches on 84.2% of disclosed vulnerabilities within your response window. Deferring exposes you to an expected loss of 20.0 units per vulnerability (breach cost 100 × attacker exploit probability 20%), which exceeds the patch cost of 20 only when p_exploit &gt; 20%. At Nash equilibrium the attacker exploits exactly often enough to make you indifferent — so patching at this rate is unexploitable.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Attacker Profile</div>
+  <div class="rec-box attacker">
+    <div class="rec-action">
+      Expected play: <span style="color:#ff8800">Wait</span>
+    </div>
+    <div class="rec-rationale">A rational adversary exploits 20.0% of unpatched windows and waits 80.0% of the time. Exploit attempts beyond this rate are suboptimal because high patch probability reduces expected payoff below attack cost.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Strategic Analysis</div>
+  <div class="interpretation">The Nash equilibrium for this patch-management game prescribes that defenders patch 84.2% of critical disclosures — not 100%, because patching every vulnerability immediately costs more than the expected breach loss when the attacker exploits only 20.0% of exposure windows. Concretely, the break-even patch rate is 20%: below that threshold, deferral is rational; above it, patching wins. The attacker's equilibrium strategy reveals that aggressive exploit campaigns are self-defeating — mounting too many attacks drives defenders to patch more frequently, erasing the attacker's advantage. At the equilibrium, the defender's expected loss per vulnerability is 20.0 units regardless of which action they take, because the attacker has calibrated exploit frequency to make the defender indifferent.</div>
+</div>
+
+<div class="scenario" id="scenario-2">
+  <div class="scenario-header">
+    <span class="scenario-num">2</span>
+    <div>
+      <div class="scenario-title">HONEYPOT — Optimal honeypot allocation across assets of asymmetric value</div>
+      <div style="margin-top:.3rem"><span style="color:#555;font-size:.78rem;margin-right:1rem">high_value_asset_loss: <span style="color:#888">100</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">low_value_asset_loss: <span style="color:#888">40</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">honeypot_detection_gain: <span style="color:#888">20</span></span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Payoff Matrix</div>
+  <div style="margin:.5rem 0"><div style="font-size:.7rem;color:#555;margin-bottom:.4rem"><span style="color:#ff8800">Defender</span> (row) vs <span style="color:#7c3aed">Attacker</span> (col) — values shown as (defender, attacker)</div><table style="border-collapse:collapse"><tr><th></th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Target-A</th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Target-B</th></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Honeypot-A</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#4ade80">20</span><span style="color:#444">, </span><span style="color:#ff6666">-20</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-40</span><span style="color:#444">, </span><span style="color:#4ade80">40</span></td></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Honeypot-B</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-100</span><span style="color:#444">, </span><span style="color:#4ade80">100</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#4ade80">20</span><span style="color:#444">, </span><span style="color:#ff6666">-20</span></td></tr></table></div>
+
+  <div class="section-label" style="margin-top:1.2rem">Nash Equilibrium  <span style="color:#444;font-size:.7rem;font-weight:400">(support-enumeration, 3ms)</span></div>
+  <table style="border-collapse:collapse;margin:.5rem 0"><tr><td style="color:#7c3aed;font-weight:600;padding-right:1.5rem">Defender</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:120px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Honeypot-A</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">66.7%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:60px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Honeypot-B</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">33.3%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = -20.00</td></tr><tr><td style="color:#ff8800;font-weight:600;padding-right:1.5rem">Attacker</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:120px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Target-B</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">66.7%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:60px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Target-A</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">33.3%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = 20.00</td></tr></table>
+
+  <div class="section-label" style="margin-top:1.2rem">Defender Recommendation</div>
+  <div class="rec-box defender">
+    <div class="rec-action">
+      Recommended: <span style="color:#7c3aed">Honeypot-A</span>
+    </div>
+    <div class="rec-rationale">Deploy your honeypot on the high-value system 66.7% of the time and on the low-value system 33.3% of the time. This mixed deployment is derived from the asymmetry between breach losses (100 vs 40) and detection gain (20). A deterministic honeypot always on the high-value asset is trivially circumvented — randomisation forces the attacker to account for both possibilities.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Attacker Profile</div>
+  <div class="rec-box attacker">
+    <div class="rec-action">
+      Expected play: <span style="color:#ff8800">Target-B</span>
+    </div>
+    <div class="rec-rationale">A rational adversary targets the high-value system only 33.3% of the time — despite its higher value — because defenders concentrate honeypot coverage there. The low-value system is targeted 66.7% of the time as the relatively safer option.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Strategic Analysis</div>
+  <div class="interpretation">This inspection-game result is counterintuitive: the Nash equilibrium has the attacker targeting your high-value system only 33.3% of the time, even though it is worth 2.5x more. The reason is that defenders rationally concentrate protection (66.7% honeypot coverage) on the high-value asset, which suppresses attacker incentive to target it. The practical implication is that a static, predictable honeypot on your most valuable system is exploitable: a sophisticated attacker simply avoids it. Randomised deployment — 66.7% / 33.3% split — makes the attacker's decision genuinely uncertain, achieving maximum deterrence per honeypot. The defender's expected loss at equilibrium is 20.0 units, which is the minimum achievable given the asset value asymmetry.</div>
+</div>
+
+<div class="scenario" id="scenario-3">
+  <div class="scenario-header">
+    <span class="scenario-num">3</span>
+    <div>
+      <div class="scenario-title">IDS — Optimal IDS sensitivity tuning against stealthy vs. noisy attackers</div>
+      <div style="margin-top:.3rem"><span style="color:#555;font-size:.78rem;margin-right:1rem">breach_cost: <span style="color:#888">80</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">false_positive_cost: <span style="color:#888">10</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">stealthy_attack_cost: <span style="color:#888">20</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">noisy_attack_cost: <span style="color:#888">5</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">stealthy_breach_gain: <span style="color:#888">60</span></span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Payoff Matrix</div>
+  <div style="margin:.5rem 0"><div style="font-size:.7rem;color:#555;margin-bottom:.4rem"><span style="color:#ff8800">Defender</span> (row) vs <span style="color:#7c3aed">Attacker</span> (col) — values shown as (defender, attacker)</div><table style="border-collapse:collapse"><tr><th></th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Noisy</th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Stealthy</th></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">High-IDS</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-10</span><span style="color:#444">, </span><span style="color:#ff6666">-5</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-10</span><span style="color:#444">, </span><span style="color:#ff6666">-20</span></td></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Low-IDS</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#4ade80">0</span><span style="color:#444">, </span><span style="color:#ff6666">-5</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-80</span><span style="color:#444">, </span><span style="color:#4ade80">60</span></td></tr></table></div>
+
+  <div class="section-label" style="margin-top:1.2rem">Nash Equilibrium  <span style="color:#444;font-size:.7rem;font-weight:400">(support-enumeration, 3ms)</span></div>
+  <table style="border-collapse:collapse;margin:.5rem 0"><tr><td style="color:#7c3aed;font-weight:600;padding-right:1.5rem">Defender</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:146px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">High-IDS</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">81.2%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:33px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Low-IDS</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">18.8%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = -10.00</td></tr><tr><td style="color:#ff8800;font-weight:600;padding-right:1.5rem">Attacker</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:157px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Noisy</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">87.5%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:22px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Stealthy</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">12.5%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = -5.00</td></tr></table>
+
+  <div class="section-label" style="margin-top:1.2rem">Defender Recommendation</div>
+  <div class="rec-box defender">
+    <div class="rec-action">
+      Recommended: <span style="color:#7c3aed">High-IDS</span>
+    </div>
+    <div class="rec-rationale">Run high-sensitivity IDS 81.2% of the time. The break-even point is when stealthy breach probability equals 12% (FP cost 10 / breach cost 80). At equilibrium, attackers use stealthy techniques only 12.5% of the time — the high-IDS rate makes stealthy attacks costly enough to suppress their use. Consider correlating high-sensitivity periods to elevated threat intelligence cycles.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Attacker Profile</div>
+  <div class="rec-box attacker">
+    <div class="rec-action">
+      Expected play: <span style="color:#ff8800">Noisy</span>
+    </div>
+    <div class="rec-rationale">A rational attacker favours noisy, cheap attacks 87.5% of the time because the high probability of elevated IDS (81.2%) makes the extra cost of stealthy techniques (20 units) unjustifiable. Stealthy attacks are reserved for the 12.5% of periods when low-IDS is expected.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Strategic Analysis</div>
+  <div class="interpretation">The equilibrium prescribes running high-sensitivity IDS 81.2% of the time — not always, because the false-positive analyst burden (10 units) is a real cost, and permanent high sensitivity is wasteful when attackers adapt. The key insight is the feedback loop: the higher the IDS rate, the less attractive stealthy attacks become, because the extra cost (20 units) yields no benefit if likely to be caught anyway. At 81.2% high-IDS, attackers respond by using stealthy techniques only 12.5% of the time — which is exactly the rate that makes the defender indifferent between sensitivity levels. A defender who runs high-IDS less than 81.2% of the time creates an exploitable gap: attackers will increase stealthy attack frequency, raising breach probability faster than the FP cost savings justify.</div>
+</div>
+
+<div class="scenario" id="scenario-4">
+  <div class="scenario-header">
+    <span class="scenario-num">4</span>
+    <div>
+      <div class="scenario-title">PHISHING — Optimal security awareness training allocation vs. a targeting adversary</div>
+      <div style="margin-top:.3rem"><span style="color:#555;font-size:.78rem;margin-right:1rem">exec_breach_cost: <span style="color:#888">80</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">staff_breach_cost: <span style="color:#888">40</span></span><span style="color:#555;font-size:.78rem;margin-right:1rem">training_effectiveness: <span style="color:#888">20</span></span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Payoff Matrix</div>
+  <div style="margin:.5rem 0"><div style="font-size:.7rem;color:#555;margin-bottom:.4rem"><span style="color:#ff8800">Defender</span> (row) vs <span style="color:#7c3aed">Attacker</span> (col) — values shown as (defender, attacker)</div><table style="border-collapse:collapse"><tr><th></th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Phish-Exec</th><th style="color:#7c3aed;font-size:.78rem;padding:.3rem .6rem">Phish-Staff</th></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Train-Exec</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#4ade80">20</span><span style="color:#444">, </span><span style="color:#ff6666">-20</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-40</span><span style="color:#444">, </span><span style="color:#4ade80">40</span></td></tr><tr><td style="color:#ff8800;font-size:.78rem;padding:.3rem .6rem;font-weight:600">Train-Staff</td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#ff6666">-80</span><span style="color:#444">, </span><span style="color:#4ade80">80</span></td><td style="text-align:center;padding:.3rem .8rem;border:1px solid #1e1e1e;font-size:.8rem"><span style="color:#4ade80">20</span><span style="color:#444">, </span><span style="color:#ff6666">-20</span></td></tr></table></div>
+
+  <div class="section-label" style="margin-top:1.2rem">Nash Equilibrium  <span style="color:#444;font-size:.7rem;font-weight:400">(support-enumeration, 2ms)</span></div>
+  <table style="border-collapse:collapse;margin:.5rem 0"><tr><td style="color:#7c3aed;font-weight:600;padding-right:1.5rem">Defender</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:112px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Train-Exec</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">62.5%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:67px;background:#7c3aed;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Train-Staff</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">37.5%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = -17.50</td></tr><tr><td style="color:#ff8800;font-weight:600;padding-right:1.5rem">Attacker</td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:112px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Phish-Staff</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">62.5%</span></td><td style="padding:.3rem .8rem .3rem 0"><div style="display:inline-block;height:10px;width:67px;background:#ff8800;border-radius:2px;margin-right:6px;vertical-align:middle"></div><span style="color:#e0e0e0;font-size:.85rem">Phish-Exec</span><span style="color:#666;font-size:.78rem;margin-left:.4rem">37.5%</span></td><td style="color:#555;font-size:.78rem;padding-left:1rem">E[payoff] = 17.50</td></tr></table>
+
+  <div class="section-label" style="margin-top:1.2rem">Defender Recommendation</div>
+  <div class="rec-box defender">
+    <div class="rec-action">
+      Recommended: <span style="color:#7c3aed">Train-Exec</span>
+    </div>
+    <div class="rec-rationale">Allocate 62.5% of your security awareness budget to executives and privileged users, and 37.5% to general staff. This split is proportional to the breach cost asymmetry: executive compromise (80 units) vs. staff compromise (40 units). A pure executive-only training strategy is predictable and leaves staff systematically undertrained — the Nash mixed strategy eliminates this exploitable pattern.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Attacker Profile</div>
+  <div class="rec-box attacker">
+    <div class="rec-action">
+      Expected play: <span style="color:#ff8800">Phish-Staff</span>
+    </div>
+    <div class="rec-rationale">Despite executives representing 2.0x the breach value of staff, a rational attacker targets executives only 37.5% of the time. The higher defensive training concentration on executives (62.5%) suppresses the incentive to target them. The attacker predominantly (62.5%) targets staff, where training coverage is thinner.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem">Strategic Analysis</div>
+  <div class="interpretation">The phishing targeting game produces a result that challenges the 'train your executives first' heuristic. While executives are 2.0x more valuable targets, the Nash equilibrium has attackers phishing them only 37.5% of the time — because defenders rationally skew 62.5% of their training budget toward executives. The practical recommendation is to train executives more but not exclusively: a 62/38 split is the unexploitable allocation. An organisation that trains only executives signals to attackers that staff are soft targets; an organisation that splits evenly signals that executives are under-protected relative to their value. The equilibrium split (62.5% / 37.5%) is the unique allocation where neither group is a systematically preferred target. At equilibrium, the expected loss per campaign is 17.5 units.</div>
+</div>
+
+<footer>
+  Generated by <strong>Phronesis</strong> &nbsp;|&nbsp;
+  Solver: <a href="https://mieza.ai">Mieza GTO — support-enumeration Nash solver</a> &nbsp;|&nbsp;
+  For authorised security analysis and educational use only.
+</footer>
+</body>
+</html>
