@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erebus Scan Report — http://demo.testfire.net</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; padding: 2rem; }
+  .header { border-bottom: 1px solid #222; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .header h1 { font-size: 1.6rem; font-weight: 700; color: #fff; }
+  .header h1 span { color: #7c3aed; }
+  .meta { color: #555; font-size: .85rem; margin-top: .4rem; }
+  .stats { display: flex; gap: 2rem; margin: 2rem 0; }
+  .stat { text-align: center; background: #111; border: 1px solid #1e1e1e; border-radius: 8px; padding: 1rem 1.5rem; }
+  .section-title { color: #888; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; margin: 2rem 0 1rem; }
+  .finding { background: #111; border-radius: 6px; padding: 1rem 1.2rem; margin-bottom: .75rem; }
+  .finding-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+  .finding-title { font-weight: 600; color: #f0f0f0; }
+  .finding-module { color: #444; font-size: .8rem; }
+  .finding-url { font-family: monospace; font-size: .78rem; color: #555; margin-bottom: .4rem; word-break: break-all; }
+  .finding-detail { font-size: .88rem; color: #bbb; margin-bottom: .4rem; }
+  .evidence { font-size: .82rem; color: #777; font-family: monospace; margin-top: .3rem; }
+  .remediation { font-size: .82rem; color: #4ade80; margin-top: .4rem; }
+  .badge { font-size: .65rem; font-weight: 700; padding: .2em .55em; border-radius: 3px; color: #000; text-transform: uppercase; letter-spacing: .05em; }
+  .urls-list { font-family: monospace; font-size: .78rem; color: #555; line-height: 1.8; }
+  footer { margin-top: 3rem; color: #333; font-size: .75rem; border-top: 1px solid #1a1a1a; padding-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1><span>Erebus</span> Vulnerability Scan Report</h1>
+  <div class="meta">Target: http://demo.testfire.net &nbsp;|&nbsp; 2026-05-13 21:02 UTC &nbsp;|&nbsp; 50 URLs crawled &nbsp;|&nbsp; 50 forms found</div>
+</div>
+
+<div class="stats">
+  <div class="stat"><span style="color:#ff8800;font-size:2rem;font-weight:700">3</span><br><span style="color:#888;font-size:.8rem;text-transform:uppercase">high</span></div><div class="stat"><span style="color:#ffcc00;font-size:2rem;font-weight:700">2</span><br><span style="color:#888;font-size:.8rem;text-transform:uppercase">medium</span></div><div class="stat"><span style="color:#44aaff;font-size:2rem;font-weight:700">3</span><br><span style="color:#888;font-size:.8rem;text-transform:uppercase">low</span></div><div class="stat"><span style="color:#888888;font-size:2rem;font-weight:700">1</span><br><span style="color:#888;font-size:.8rem;text-transform:uppercase">info</span></div>
+  <div class="stat"><span style="color:#e0e0e0;font-size:2rem;font-weight:700">9</span><br><span style="color:#888;font-size:.8rem;text-transform:uppercase">Total</span></div>
+</div>
+
+<div class="section-title">Findings</div>
+
+        <div class="finding" style="border-left:3px solid #ff8800">
+            <div class="finding-header">
+                <span class="badge" style="background:#ff8800">HIGH</span>
+                <span class="finding-title">Missing HSTS Header</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">HTTP Strict-Transport-Security is not set. Browsers may allow downgrade attacks to HTTP.</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Add: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #ff8800">
+            <div class="finding-header">
+                <span class="badge" style="background:#ff8800">HIGH</span>
+                <span class="finding-title">Reflected XSS (Form)</span>
+                <span class="finding-module">[xss]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net/search.jsp</div>
+            <div class="finding-detail">Form field 'query' reflects unsanitized input into the response.</div>
+            <div class="evidence"><strong>Evidence:</strong> Probe string found unescaped in response body.</div>
+            <div class="remediation"><strong>Remediation:</strong> HTML-encode all user-supplied output. Use a Content-Security-Policy to restrict inline scripts.</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #ff8800">
+            <div class="finding-header">
+                <span class="badge" style="background:#ff8800">HIGH</span>
+                <span class="finding-title">Reflected XSS (Form)</span>
+                <span class="finding-module">[xss]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net/sendFeedback</div>
+            <div class="finding-detail">Form field 'name' reflects unsanitized input into the response.</div>
+            <div class="evidence"><strong>Evidence:</strong> Probe string found unescaped in response body.</div>
+            <div class="remediation"><strong>Remediation:</strong> HTML-encode all user-supplied output. Use a Content-Security-Policy to restrict inline scripts.</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #ffcc00">
+            <div class="finding-header">
+                <span class="badge" style="background:#ffcc00">MEDIUM</span>
+                <span class="finding-title">Missing Content-Security-Policy Header</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">No CSP header found. The application may be vulnerable to XSS and data injection attacks.</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Define a strict CSP policy. At minimum: Content-Security-Policy: default-src 'self'</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #ffcc00">
+            <div class="finding-header">
+                <span class="badge" style="background:#ffcc00">MEDIUM</span>
+                <span class="finding-title">Missing X-Frame-Options Header</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">X-Frame-Options is not set. The page may be embeddable in iframes, enabling clickjacking.</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Add: X-Frame-Options: DENY  (or SAMEORIGIN if framing is needed internally)</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #44aaff">
+            <div class="finding-header">
+                <span class="badge" style="background:#44aaff">LOW</span>
+                <span class="finding-title">Missing X-Content-Type-Options Header</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">X-Content-Type-Options: nosniff is not set. Browsers may MIME-sniff responses.</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Add: X-Content-Type-Options: nosniff</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #44aaff">
+            <div class="finding-header">
+                <span class="badge" style="background:#44aaff">LOW</span>
+                <span class="finding-title">Missing Referrer-Policy Header</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">No Referrer-Policy set. Full URLs may be leaked to third parties via the Referer header.</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Add: Referrer-Policy: strict-origin-when-cross-origin</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #44aaff">
+            <div class="finding-header">
+                <span class="badge" style="background:#44aaff">LOW</span>
+                <span class="finding-title">Missing Permissions-Policy Header</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">No Permissions-Policy header. Browser features like camera and geolocation are unrestricted.</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Add: Permissions-Policy: geolocation=(), camera=(), microphone=()</div>
+        </div>
+        <div class="finding" style="border-left:3px solid #888888">
+            <div class="finding-header">
+                <span class="badge" style="background:#888888">INFO</span>
+                <span class="finding-title">Server Version Disclosure</span>
+                <span class="finding-module">[headers]</span>
+            </div>
+            <div class="finding-url">http://demo.testfire.net</div>
+            <div class="finding-detail">The Server header reveals software version information that aids fingerprinting. Observed value: 'Apache-Coyote/1.1'</div>
+            
+            <div class="remediation"><strong>Remediation:</strong> Remove or genericize the Server header in your web server configuration.</div>
+        </div>
+
+<div class="section-title">Crawled URLs (50)</div>
+<div class="urls-list">http://demo.testfire.net<br>http://demo.testfire.net/index.jsp<br>http://demo.testfire.net/login.jsp<br>http://demo.testfire.net/index.jsp?content=inside_contact.htm<br>http://demo.testfire.net/feedback.jsp<br>http://demo.testfire.net/index.jsp?content=personal.htm<br>http://demo.testfire.net/index.jsp?content=business.htm<br>http://demo.testfire.net/index.jsp?content=inside.htm<br>http://demo.testfire.net/index.jsp?content=personal_deposit.htm<br>http://demo.testfire.net/index.jsp?content=personal_checking.htm<br>http://demo.testfire.net/index.jsp?content=personal_loans.htm<br>http://demo.testfire.net/index.jsp?content=personal_cards.htm<br>http://demo.testfire.net/index.jsp?content=personal_investments.htm<br>http://demo.testfire.net/index.jsp?content=personal_other.htm<br>http://demo.testfire.net/index.jsp?content=business_deposit.htm<br>http://demo.testfire.net/index.jsp?content=business_lending.htm<br>http://demo.testfire.net/index.jsp?content=business_cards.htm<br>http://demo.testfire.net/index.jsp?content=business_insurance.htm<br>http://demo.testfire.net/index.jsp?content=business_retirement.htm<br>http://demo.testfire.net/index.jsp?content=business_other.htm<br>http://demo.testfire.net/index.jsp?content=inside_about.htm<br>http://demo.testfire.net/cgi.exe<br>http://demo.testfire.net/index.jsp?content=inside_investor.htm<br>http://demo.testfire.net/index.jsp?content=inside_press.htm<br>http://demo.testfire.net/index.jsp?content=inside_careers.htm<br>http://demo.testfire.net/subscribe.jsp<br>http://demo.testfire.net/index.jsp?content=personal_savings.htm<br>http://demo.testfire.net/index.jsp?content=privacy.htm<br>http://demo.testfire.net/default.jsp?content=security.htm<br>http://demo.testfire.net/survey_questions.jsp<br>http://demo.testfire.net/index.jsp?content=security.htm<br>http://demo.testfire.net/status_check.jsp<br>http://demo.testfire.net/swagger/index.html<br>http://demo.testfire.net/disclaimer.htm?url=http://www.netscape.com<br>http://demo.testfire.net/disclaimer.htm?url=http://www.microsoft.com<br>http://demo.testfire.net/index.jsp?content=inside_community.htm<br>http://demo.testfire.net/pr/communityannualreport.pdf<br>http://demo.testfire.net/admin/clients.xls<br>http://demo.testfire.net/high_yield_investments.htm<br>http://demo.testfire.net/my%20documents/JohnSmith/Bank%20Site%20Documents/grouplife.htm<br>http://demo.testfire.net/index.jsp?content=inside_executives.htm<br>http://demo.testfire.net/inside_points_of_interest.htm<br>http://demo.testfire.net/index.jsp?content=pr/20061109.htm<br>http://demo.testfire.net/index.jsp?content=pr/20061005.htm<br>http://demo.testfire.net/index.jsp?content=pr/20060928.htm<br>http://demo.testfire.net/index.jsp?content=pr/20060921.htm<br>http://demo.testfire.net/index.jsp?content=pr/20060817.htm<br>http://demo.testfire.net/index.jsp?content=pr/20060720.htm<br>http://demo.testfire.net/index.jsp?content=pr/20060518.htm<br>http://demo.testfire.net/index.jsp?content=pr/20060413.htm</div>
+
+<footer>Generated by Erebus &nbsp;|&nbsp; For authorized security testing and educational use only.</footer>
+</body>
+</html>

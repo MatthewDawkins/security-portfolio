@@ -1,10 +1,19 @@
 # Security Portfolio — Matthew Dawkins
 
-Hands-on security projects spanning browser security engineering, SOC analysis, incident response, and detection automation.
+Hands-on security projects spanning offensive tooling, browser security engineering, SOC analysis, incident response, and detection automation.
 
 ---
 
 ## Projects
+
+### [Project 05 — Erebus Web Vulnerability Scanner](./project-05-erebus)
+`Python` `Web Security` `Offensive Tooling` `XSS` `SQLi` `Crawling`
+
+A modular Python web vulnerability scanner built from scratch. Erebus crawls a target with a BFS same-origin crawler, then runs six independent detection modules (XSS, SQLi, path traversal, open redirect, header policy, sensitive file exposure) against the collected surface. Results are displayed in a live Rich terminal table and exported as a self-contained HTML report. Demonstrated against AltoroMutual (IBM/HCL's authorized vulnerable banking app), producing 9 findings including two confirmed reflected XSS vulnerabilities.
+
+**Demo:** [AltoroMutual scan report](./project-05-erebus/reports/altoro-report.html) — 50 URLs, 3 HIGH, 2 MEDIUM, 3 LOW, 1 INFO.
+
+---
 
 ### [Project 04 — Eidolon Browser Privacy Extension](./project-04-eidolon)
 `TypeScript` `Chrome MV3` `Browser Security` `Fingerprinting` `Privacy`
@@ -40,6 +49,7 @@ Built a Python script to parse Linux SSH authentication logs, detect repeated fa
 
 | Area | Tools & Technologies |
 |---|---|
+| Offensive Tooling | Web vulnerability scanning, crawling, payload injection, XSS/SQLi/traversal detection |
 | Security Engineering | Chrome MV3, TypeScript, browser APIs, fingerprinting mitigations |
 | SOC Analysis | Log analysis, incident response, IOC extraction |
 | Detection & Automation | Python, Bash, Fail2Ban, SIEM workflows |
