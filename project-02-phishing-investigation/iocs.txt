@@ -1,9 +1,9 @@
-IP Address:
+IP Addresses:
 185.231.181.22
 
 Domains:
 fakebank-support.com
 fakebank-login-alert.com
 
-Email addressess:
-security@Fakebank-support.com
+Email Addresses:
+security@fakebank-support.com
