@@ -2,7 +2,9 @@
 CLI entry point for Aether.
 
 Usage:
-  python aether.py scan [--region REGION] [--profile PROFILE] [--output FILE]
+  python aether.py scan [--url URL] [--region REGION] [--profile PROFILE] [--output FILE]
+  python aether.py scan --url https://example.com          # web/DNS only, no AWS creds needed
+  python aether.py scan --mock
   python aether.py checks
 """
 
@@ -21,6 +23,16 @@ from rich import box
 from src.models import Finding
 
 console = Console()
+
+
+def _has_aws_credentials() -> bool:
+    """Return True if boto3 can resolve credentials from the environment."""
+    try:
+        session = boto3.Session()
+        creds = session.get_credentials()
+        return creds is not None and creds.get_frozen_credentials().access_key is not None
+    except Exception:
+        return False
 
 BANNER = r"""
     _          _   _
@@ -61,6 +73,17 @@ CHECK_CATALOG = [
     ("STR-CT-003",  "medium",   "CloudTrail Trail Not Multi-Region"),
     ("STR-VPC-001", "low",      "Default VPC In Use"),
     ("STR-VPC-002", "medium",   "VPC Flow Logs Not Enabled"),
+    ("STR-WEB-001", "high",     "HTTPS Not Enforced"),
+    ("STR-WEB-002", "medium",   "Missing HSTS Header"),
+    ("STR-WEB-003", "medium",   "Missing / Weak Content-Security-Policy"),
+    ("STR-WEB-004", "medium",   "Missing X-Frame-Options / frame-ancestors"),
+    ("STR-WEB-005", "low",      "Missing X-Content-Type-Options: nosniff"),
+    ("STR-WEB-006", "low",      "Server Version Disclosed in Headers"),
+    ("STR-WEB-007", "medium",   "CORS Wildcard (Access-Control-Allow-Origin: *)"),
+    ("STR-WEB-008", "medium",   "TLS Certificate Expiring Within 30 Days"),
+    ("STR-DNS-001", "high",     "Missing or Permissive SPF Record"),
+    ("STR-DNS-002", "high",     "Missing or Unenforced DMARC Record"),
+    ("STR-DNS-003", "low",      "Missing CAA Record"),
 ]
 
 
@@ -139,36 +162,52 @@ def _cmd_scan(args):
 
     region = args.region or "us-east-1"
     profile = args.profile or None
+    url = getattr(args, "url", None) or None
 
-    try:
-        session = boto3.Session(profile_name=profile, region_name=region)
-    except Exception as e:
-        console.print(f"[red]Failed to create boto3 session: {e}[/red]")
-        sys.exit(1)
+    # URL-only mode: no AWS credentials needed
+    url_only = url and not profile and not _has_aws_credentials()
 
-    console.print(f"  [dim]Account:[/dim]  resolving...")
-    console.print(f"  [dim]Region:[/dim]   {region}")
-    console.print(f"  [dim]Profile:[/dim]  {profile or 'default'}\n")
+    session = None
+    if not url_only:
+        try:
+            session = boto3.Session(profile_name=profile, region_name=region)
+        except Exception as e:
+            console.print(f"[red]Failed to create boto3 session: {e}[/red]")
+            sys.exit(1)
+
+    if url_only:
+        console.print(f"  [yellow]No AWS credentials found — running web/DNS checks only[/yellow]")
+    else:
+        console.print(f"  [dim]Account:[/dim]  resolving...")
+        console.print(f"  [dim]Region:[/dim]   {region}")
+        console.print(f"  [dim]Profile:[/dim]  {profile or 'default'}")
+    if url:
+        console.print(f"  [dim]URL:[/dim]      {url}")
+    console.print()
 
     def on_module(service_name: str):
-        console.print(f"  [cyan]→[/cyan] Scanning {service_name}...", end="\r")
+        console.print(f"  [cyan]>[/cyan] Scanning {service_name}...", end="\r")
 
     try:
-        identity, findings = run_scan(session, region, progress_callback=on_module)
+        identity, findings = run_scan(session, region, url=url, progress_callback=on_module)
     except NoCredentialsError:
         console.print("\n[red]No AWS credentials found.[/red]")
         console.print("Configure credentials via:")
         console.print("  • Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)")
         console.print("  • ~/.aws/credentials (aws configure)")
         console.print("  • IAM role (EC2/ECS/Lambda instance profile)")
-        sys.exit(1)
+        if not url:
+            sys.exit(1)
+        findings = []
+        identity = {"account_id": "n/a", "arn": "n/a", "region": region}
     except ClientError as e:
         console.print(f"\n[red]AWS API error: {e}[/red]")
         sys.exit(1)
 
-    console.print(f"\n  [dim]Account ID:[/dim] {identity['account_id']}")
-    console.print(f"  [dim]Identity:[/dim]   {identity['arn']}\n")
-    console.print(f"  Done. {len(findings)} findings across {region}.\n")
+    if not url_only:
+        console.print(f"\n  [dim]Account ID:[/dim] {identity['account_id']}")
+        console.print(f"  [dim]Identity:[/dim]   {identity['arn']}")
+    console.print(f"\n  Done. {len(findings)} findings.\n")
 
     _print_findings(findings)
 
@@ -219,6 +258,12 @@ def main():
         default=None,
         metavar="FILE",
         help="Write HTML report to FILE (e.g. reports/aether-report.html)",
+    )
+    scan_p.add_argument(
+        "--url", "-u",
+        default=None,
+        metavar="URL",
+        help="Target URL for web/DNS checks (e.g. https://mieza.ai). Can be used without AWS credentials.",
     )
     scan_p.add_argument(
         "--mock",

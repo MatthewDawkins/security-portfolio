@@ -6,12 +6,16 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "watch": "webpack --config webpack.config.js --watch",
+    "test": "jest",
     "dev:firefox": "npm run build && web-ext run --source-dir dist --firefox-profile privacy-shield-dev",
     "dev:chrome": "npm run build"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.268",
+    "@types/jest": "^30.0.0",
     "copy-webpack-plugin": "^12.0.2",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "web-ext": "^8.2.0",

@@ -10,12 +10,19 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     background: './src/background/index.ts',
-    content: './src/content/index.ts',
-    canvas: './src/injected/canvas.ts',
-    webrtc: './src/injected/webrtc.ts',
-    popup: './src/popup/index.ts',
-    dashboard: './src/dashboard/index.ts',
-    settings: './src/settings/index.ts',
+    content:    './src/content/index.ts',
+    // Defenses (MAIN world — spoof/block)
+    canvas:     './src/injected/canvas.ts',
+    webrtc:     './src/injected/webrtc.ts',
+    // Detectors (MAIN world — detect and report)
+    audio:      './src/injected/audio.ts',
+    webgl:      './src/injected/webgl.ts',
+    fonts:      './src/injected/fonts.ts',
+    hardware:   './src/injected/hardware.ts',
+    // UI
+    popup:      './src/popup/index.ts',
+    dashboard:  './src/dashboard/index.ts',
+    settings:   './src/settings/index.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -38,14 +45,14 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: 'public', to: '.' },
-        { from: 'src/popup/index.html', to: 'popup.html' },
+        { from: 'src/popup/index.html',     to: 'popup.html' },
         { from: 'src/dashboard/index.html', to: 'dashboard.html' },
-        { from: 'src/settings/index.html', to: 'settings.html' },
+        { from: 'src/settings/index.html',  to: 'settings.html' },
       ],
     }),
   ],
   optimization: {
-    // Keep output readable — good for portfolio / learning
+    // Keep output readable — good for portfolio / inspection
     minimize: false,
   },
 }

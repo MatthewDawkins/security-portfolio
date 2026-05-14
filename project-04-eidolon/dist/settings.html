@@ -19,26 +19,27 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 16px 28px;
+      padding: 14px 28px;
       background: #0f1117;
       border-bottom: 1px solid #1e2230;
     }
-    header img { width: 32px; height: 32px; }
-    header h1 { font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
-    header h1 span { color: #00d4aa; }
+    header img { width: 28px; height: 28px; }
+    header h1 { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; }
+    .by { font-size: 10px; color: #4a5568; font-weight: 400; }
 
     main {
       max-width: 520px;
-      margin: 32px auto;
+      margin: 28px auto;
       padding: 0 28px;
     }
 
     .section-title {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #64748b;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      font-weight: 600;
     }
 
     .card {
@@ -46,14 +47,14 @@
       border: 1px solid #1e2230;
       border-radius: 10px;
       overflow: hidden;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .setting-row {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 16px 20px;
+      padding: 14px 18px;
       border-bottom: 1px solid #141720;
     }
     .setting-row:last-child { border-bottom: none; }
@@ -63,8 +64,20 @@
       font-size: 13px;
       font-weight: 500;
       color: #e2e8f0;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
+    .setting-tag {
+      display: inline-block;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+    .tag-defense  { background: #00d4aa1a; color: #00d4aa; border: 1px solid #00d4aa33; }
+    .tag-detection { background: #f565651a; color: #f56565; border: 1px solid #f5656533; }
     .setting-desc {
       font-size: 11px;
       color: #64748b;
@@ -104,6 +117,16 @@
       background: #00d4aa;
     }
 
+    .status-bar {
+      height: 2px;
+      background: transparent;
+    }
+    .status-bar.saving { background: #00d4aa; animation: pulse 0.6s ease-out forwards; }
+    @keyframes pulse {
+      0%   { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
     .note {
       background: #0f1117;
       border: 1px solid #1e2230;
@@ -112,20 +135,9 @@
       font-size: 11px;
       color: #64748b;
       line-height: 1.5;
+      margin-bottom: 16px;
     }
     .note strong { color: #94a3b8; }
-
-    .status-bar {
-      height: 2px;
-      background: transparent;
-      transition: background 0.3s;
-      margin-bottom: 0;
-    }
-    .status-bar.saving { background: #00d4aa; animation: pulse 0.6s ease-out forwards; }
-    @keyframes pulse {
-      0%   { opacity: 1; }
-      100% { opacity: 0; }
-    }
 
     .reload-btn {
       margin-top: 10px;
@@ -144,18 +156,22 @@
 <body>
   <header>
     <img src="icons/icon48.png" alt="Eidolon">
-    <h1>Eid<span>olon</span> — Settings</h1>
+    <h1>Eidolon <span class="by">— Settings</span></h1>
   </header>
 
   <main>
-    <div class="section-title">Protection features</div>
+    <!-- Defenses -->
+    <div class="section-title">Active Defenses</div>
     <div class="card">
       <div class="status-bar" id="status-bar"></div>
 
       <div class="setting-row">
         <div class="setting-info">
-          <div class="setting-name">Block Trackers</div>
-          <div class="setting-desc">Block network requests to known tracking and advertising domains using declarative rules.</div>
+          <div class="setting-name">
+            Block Trackers
+            <span class="setting-tag tag-defense">Defense</span>
+          </div>
+          <div class="setting-desc">Block network requests to 200+ known tracking domains using Chrome's declarative network rules.</div>
         </div>
         <label class="switch">
           <input type="checkbox" id="blockTrackers">
@@ -165,8 +181,11 @@
 
       <div class="setting-row">
         <div class="setting-info">
-          <div class="setting-name">Spoof Canvas Fingerprint</div>
-          <div class="setting-desc">Add imperceptible per-session noise to canvas output so each session produces a unique fingerprint.</div>
+          <div class="setting-name">
+            Spoof Canvas Fingerprint
+            <span class="setting-tag tag-defense">Defense</span>
+          </div>
+          <div class="setting-desc">Inject imperceptible per-session noise into canvas pixel output so each session produces a unique, unlinkable fingerprint.</div>
         </div>
         <label class="switch">
           <input type="checkbox" id="spoofCanvas">
@@ -176,8 +195,11 @@
 
       <div class="setting-row">
         <div class="setting-info">
-          <div class="setting-name">Block WebRTC IP Leak</div>
-          <div class="setting-desc">Force relay-only ICE transport on WebRTC connections to prevent your real IP from being exposed.</div>
+          <div class="setting-name">
+            Block WebRTC IP Leak
+            <span class="setting-tag tag-defense">Defense</span>
+          </div>
+          <div class="setting-desc">Force relay-only ICE transport on all WebRTC connections — STUN candidates that expose your real IP are suppressed.</div>
         </div>
         <label class="switch">
           <input type="checkbox" id="blockWebRTC">
@@ -186,8 +208,70 @@
       </div>
     </div>
 
+    <!-- Detectors -->
+    <div class="section-title">Fingerprint Detectors</div>
+    <div class="card">
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">
+            Audio Fingerprint Detection
+            <span class="setting-tag tag-detection">Detection</span>
+          </div>
+          <div class="setting-desc">Detect when sites probe OfflineAudioContext to extract hardware-specific floating-point rendering characteristics.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="detectAudioFingerprint">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">
+            WebGL Fingerprint Detection
+            <span class="setting-tag tag-detection">Detection</span>
+          </div>
+          <div class="setting-desc">Detect when sites read GPU renderer and vendor strings via WebGL — the primary method for hardware-specific device fingerprinting.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="detectWebGLFingerprint">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">
+            Font Enumeration Detection
+            <span class="setting-tag tag-detection">Detection</span>
+          </div>
+          <div class="setting-desc">Detect systematic font probing via canvas — sites measure text widths across many font families to identify which fonts are installed.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="detectFontEnumeration">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">
+            Hardware Profile Detection
+            <span class="setting-tag tag-detection">Detection</span>
+          </div>
+          <div class="setting-desc">Detect when scripts rapidly read CPU count, RAM, touch points, and screen geometry to build a persistent hardware profile.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="detectHardwareProbe">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
     <div class="note">
-      <strong>Note:</strong> Canvas and WebRTC changes take effect on the <strong>next page load</strong> for already-open tabs. Tracker blocking takes effect immediately.
+      <strong>Note:</strong> Defense changes take effect on the <strong>next page load</strong> for already-open tabs.
+      Detector changes take effect immediately on new page loads.
       <br><br>
       <button class="reload-btn" id="reload-btn">Reload all open tabs</button>
     </div>

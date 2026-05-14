@@ -1,10 +1,17 @@
 // MV3 Service Worker background.
-// declarativeNetRequest handles tracker blocking (see rules.json).
-// chrome.scripting dynamically registers canvas.js / webrtc.js into the MAIN
-// world so they bypass page CSP and can be toggled independently per setting.
+// declarativeNetRequest handles tracker blocking (rules.json).
+// chrome.scripting dynamically registers MAIN-world scripts — both defenses
+// (canvas spoofing, WebRTC relay-only) and detectors (audio, webgl, fonts, hardware).
 
-import { BlockedRequest, ExtensionState, TabData, Settings, DEFAULT_SETTINGS } from '../shared/types'
-import { isTrackerDomain } from '../shared/tracker-domains'
+import {
+  BlockedRequest,
+  ExtensionState,
+  FingerprintProbe,
+  Settings,
+  DEFAULT_SETTINGS,
+  TabData,
+} from '../shared/types'
+import { getTrackerCategory, isTrackerDomain } from '../shared/tracker-domains'
 
 // ── Storage helpers ────────────────────────────────────────────────────────
 
@@ -43,37 +50,56 @@ async function saveSettings(settings: Settings): Promise<void> {
   })
 }
 
-// ── Dynamic content script registration ───────────────────────────────────
-// canvas.js and webrtc.js run in MAIN world, bypassing page CSP.
-// We register/unregister them so settings take effect on the next page load.
+// ── Content script IDs ────────────────────────────────────────────────────
+// Defenses run in MAIN world to bypass CSP and intercept APIs before page scripts.
+// Detectors also run in MAIN world to intercept API calls and fire CustomEvents
+// that content.js (isolated world) listens for and forwards to background.
 
-const CANVAS_ID = 'eidolon-canvas'
-const WEBRTC_ID = 'eidolon-webrtc'
+const SCRIPT_IDS = {
+  canvas:   'eidolon-canvas',
+  webrtc:   'eidolon-webrtc',
+  audio:    'eidolon-audio',
+  webgl:    'eidolon-webgl',
+  fonts:    'eidolon-fonts',
+  hardware: 'eidolon-hardware',
+} as const
+
+type ScriptKey = keyof typeof SCRIPT_IDS
 
 async function syncContentScripts(enabled: boolean, settings: Settings): Promise<void> {
   const registered = await chrome.scripting.getRegisteredContentScripts()
-  const ids = new Set(registered.map((s) => s.id))
+  const activeIds = new Set(registered.map((s) => s.id))
 
-  const wantCanvas = enabled && settings.spoofCanvas
-  const wantWebRTC = enabled && settings.blockWebRTC
-
-  if (wantCanvas && !ids.has(CANVAS_ID)) {
-    await chrome.scripting.registerContentScripts([{
-      id: CANVAS_ID, matches: ['<all_urls>'], js: ['canvas.js'],
-      runAt: 'document_start', world: 'MAIN', allFrames: true,
-    }])
-  } else if (!wantCanvas && ids.has(CANVAS_ID)) {
-    await chrome.scripting.unregisterContentScripts({ ids: [CANVAS_ID] })
+  const desired: Record<ScriptKey, boolean> = {
+    canvas:   enabled && settings.spoofCanvas,
+    webrtc:   enabled && settings.blockWebRTC,
+    audio:    enabled && settings.detectAudioFingerprint,
+    webgl:    enabled && settings.detectWebGLFingerprint,
+    fonts:    enabled && settings.detectFontEnumeration,
+    hardware: enabled && settings.detectHardwareProbe,
   }
 
-  if (wantWebRTC && !ids.has(WEBRTC_ID)) {
-    await chrome.scripting.registerContentScripts([{
-      id: WEBRTC_ID, matches: ['<all_urls>'], js: ['webrtc.js'],
-      runAt: 'document_start', world: 'MAIN', allFrames: true,
-    }])
-  } else if (!wantWebRTC && ids.has(WEBRTC_ID)) {
-    await chrome.scripting.unregisterContentScripts({ ids: [WEBRTC_ID] })
+  const toRegister: chrome.scripting.RegisteredContentScript[] = []
+  const toUnregister: string[] = []
+
+  for (const [key, want] of Object.entries(desired) as [ScriptKey, boolean][]) {
+    const id = SCRIPT_IDS[key]
+    if (want && !activeIds.has(id)) {
+      toRegister.push({
+        id,
+        matches: ['<all_urls>'],
+        js: [`${key}.js`],
+        runAt: 'document_start',
+        world: 'MAIN',
+        allFrames: true,
+      })
+    } else if (!want && activeIds.has(id)) {
+      toUnregister.push(id)
+    }
   }
+
+  if (toRegister.length) await chrome.scripting.registerContentScripts(toRegister)
+  if (toUnregister.length) await chrome.scripting.unregisterContentScripts({ ids: toUnregister })
 }
 
 async function syncRulesets(enabled: boolean, settings: Settings): Promise<void> {
@@ -85,27 +111,26 @@ async function syncRulesets(enabled: boolean, settings: Settings): Promise<void>
   )
 }
 
-// Sync on install/update. Dynamic registrations persist across service-worker
-// restarts so we don't need a startup IIFE — onInstalled covers both fresh
-// install and dev-mode reload (which Chrome treats as an update).
+// ── Initialisation ────────────────────────────────────────────────────────
+
 chrome.runtime.onInstalled.addListener(async () => {
   const [state, settings] = await Promise.all([loadState(), loadSettings()])
   await Promise.all([syncContentScripts(state.enabled, settings), syncRulesets(state.enabled, settings)])
 })
 
 // ── webRequest observer ────────────────────────────────────────────────────
+// Observes requests to classify and record blocked trackers per tab.
+// The actual network block is handled by declarativeNetRequest (rules.json).
 
 chrome.webRequest.onBeforeRequest.addListener(
   (details) => {
     if (details.tabId < 0) return
-
     let hostname: string
     try {
       hostname = new URL(details.url).hostname.replace(/^www\./, '')
     } catch {
       return
     }
-
     if (!isTrackerDomain(hostname)) return
     recordBlock(details.tabId, details.url, details.type, hostname)
   },
@@ -116,14 +141,13 @@ async function recordBlock(tabId: number, url: string, type: string, domain: str
   const state = await loadState()
   if (!state.enabled) return
 
+  const category = getTrackerCategory(domain) ?? 'ad-network'
+
   if (!state.tabs[tabId]) {
-    state.tabs[tabId] = {
-      url: '', title: '', blocked: [],
-      webrtcBlocked: false, canvasSpoofed: false, lastUpdated: Date.now(),
-    }
+    state.tabs[tabId] = emptyTabData()
   }
 
-  const blocked: BlockedRequest = { url, type, reason: 'tracker', timestamp: Date.now(), domain }
+  const blocked: BlockedRequest = { url, type, reason: 'tracker', timestamp: Date.now(), domain, category }
   state.tabs[tabId].blocked.push(blocked)
   state.tabs[tabId].lastUpdated = Date.now()
   state.totalBlocked++
@@ -132,16 +156,39 @@ async function recordBlock(tabId: number, url: string, type: string, domain: str
   chrome.runtime.sendMessage({ type: 'BLOCKED', tabId, blocked }).catch(() => {})
 }
 
+// ── Fingerprint probe recording ───────────────────────────────────────────
+
+async function recordProbe(tabId: number, probe: FingerprintProbe) {
+  const state = await loadState()
+  if (!state.enabled) return
+
+  if (!state.tabs[tabId]) {
+    state.tabs[tabId] = emptyTabData()
+  }
+
+  // Deduplicate: only store the first occurrence of each probe type per tab
+  const existing = state.tabs[tabId].fingerprintProbes
+  if (!existing.some((p) => p.type === probe.type)) {
+    existing.push(probe)
+    state.tabs[tabId].lastUpdated = Date.now()
+    await saveState(state)
+    chrome.runtime.sendMessage({ type: 'PROBE_DETECTED', tabId, probe }).catch(() => {})
+  }
+}
+
 // ── Tab lifecycle ──────────────────────────────────────────────────────────
+
+function emptyTabData(): TabData {
+  return {
+    url: '', title: '', blocked: [], fingerprintProbes: [],
+    webrtcBlocked: false, canvasSpoofed: false, lastUpdated: Date.now(),
+  }
+}
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (changeInfo.status === 'loading' && changeInfo.url) {
     const state = await loadState()
-    state.tabs[tabId] = {
-      url: changeInfo.url, title: '',
-      blocked: [], webrtcBlocked: false, canvasSpoofed: false,
-      lastUpdated: Date.now(),
-    }
+    state.tabs[tabId] = { ...emptyTabData(), url: changeInfo.url }
     await saveState(state)
     return
   }
@@ -149,8 +196,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (changeInfo.url || changeInfo.title) {
     const state = await loadState()
     if (state.tabs[tabId]) {
-      if (changeInfo.url) state.tabs[tabId].url   = changeInfo.url
-      if (tab.title)      state.tabs[tabId].title = tab.title
+      if (changeInfo.url)  state.tabs[tabId].url   = changeInfo.url
+      if (tab.title)       state.tabs[tabId].title = tab.title
       await saveState(state)
     }
   }
@@ -170,7 +217,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 async function handleMessage(
-  message: { type: string; tabId?: number; settings?: Settings },
+  message: { type: string; tabId?: number; settings?: Settings; probe?: FingerprintProbe },
   sender: chrome.runtime.MessageSender
 ): Promise<unknown> {
   const state = await loadState()
@@ -202,12 +249,7 @@ async function handleMessage(
 
     case 'CANVAS_SPOOFED':
       if (sender.tab?.id != null) {
-        if (!state.tabs[sender.tab.id]) {
-          state.tabs[sender.tab.id] = {
-            url: '', title: '', blocked: [],
-            webrtcBlocked: false, canvasSpoofed: false, lastUpdated: Date.now(),
-          }
-        }
+        if (!state.tabs[sender.tab.id]) state.tabs[sender.tab.id] = emptyTabData()
         state.tabs[sender.tab.id].canvasSpoofed = true
         await saveState(state)
       }
@@ -215,14 +257,15 @@ async function handleMessage(
 
     case 'WEBRTC_BLOCKED':
       if (sender.tab?.id != null) {
-        if (!state.tabs[sender.tab.id]) {
-          state.tabs[sender.tab.id] = {
-            url: '', title: '', blocked: [],
-            webrtcBlocked: false, canvasSpoofed: false, lastUpdated: Date.now(),
-          }
-        }
+        if (!state.tabs[sender.tab.id]) state.tabs[sender.tab.id] = emptyTabData()
         state.tabs[sender.tab.id].webrtcBlocked = true
         await saveState(state)
+      }
+      return null
+
+    case 'FINGERPRINT_PROBE':
+      if (sender.tab?.id != null && message.probe) {
+        await recordProbe(sender.tab.id, message.probe)
       }
       return null
 

@@ -15,114 +15,201 @@
       font-size: 13px;
     }
 
-    /* Header */
+    /* ── Header ── */
     .header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 14px 16px 12px;
+      gap: 9px;
+      padding: 12px 14px 10px;
       border-bottom: 1px solid #1e2230;
     }
-    .header img { width: 28px; height: 28px; }
-    .header h1 { font-size: 15px; font-weight: 600; flex: 1; letter-spacing: 0.3px; }
+    .header img { width: 26px; height: 26px; flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+    }
+    .by-mieza {
+      font-size: 10px;
+      font-weight: 400;
+      color: #4a5568;
+      letter-spacing: 0.3px;
+    }
 
     .toggle {
       background: none;
-      border: 2px solid #00d4aa;
+      border: 1.5px solid #00d4aa;
       border-radius: 20px;
       color: #00d4aa;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 3px 10px;
+      padding: 3px 9px;
       cursor: pointer;
       letter-spacing: 1px;
       transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
     }
     .toggle:hover { background: #00d4aa; color: #0f1117; }
     .toggle.off { border-color: #4a5568; color: #4a5568; }
     .toggle.off:hover { background: #4a5568; color: #0f1117; }
 
-    /* Status bar */
+    /* ── Status bar ── */
     .status {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
+      gap: 7px;
+      padding: 6px 14px;
       background: #141720;
-      font-size: 12px;
-      color: #94a3b8;
+      font-size: 11px;
+      color: #64748b;
     }
     .dot {
-      width: 8px; height: 8px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: #00d4aa;
-      box-shadow: 0 0 6px #00d4aa88;
+      box-shadow: 0 0 5px #00d4aa88;
+      flex-shrink: 0;
     }
     .dot.off { background: #4a5568; box-shadow: none; }
 
-    /* Stats grid */
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background: #1e2230;
-      border-top: 1px solid #1e2230;
+    /* ── Score section ── */
+    .score-section {
+      padding: 14px 14px 12px;
       border-bottom: 1px solid #1e2230;
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
-    .stat {
+    .score-ring {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+    }
+    .score-ring svg { width: 64px; height: 64px; transform: rotate(-90deg); }
+    .score-ring-bg { fill: none; stroke: #1e2230; stroke-width: 5; }
+    .score-ring-fill { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease, stroke 0.4s; }
+    .score-number {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 14px 8px;
-      background: #0f1117;
-      gap: 4px;
-    }
-    .stat-value {
-      font-size: 22px;
-      font-weight: 700;
-      color: #00d4aa;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
       line-height: 1;
     }
-    .stat-value.inactive { color: #4a5568; }
-    .stat-label {
+    .score-info { flex: 1; }
+    .score-label-text {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .score-sublabel {
       font-size: 10px;
+      color: #4a5568;
+      line-height: 1.4;
+    }
+    .score-blocked {
+      margin-top: 6px;
+      font-size: 11px;
       color: #64748b;
-      text-align: center;
-      line-height: 1.3;
+    }
+    .score-blocked strong { color: #e2e8f0; }
+
+    /* ── Section headers ── */
+    .section-hdr {
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #4a5568;
+      font-weight: 600;
     }
 
-    /* Blocked list preview */
-    .blocked-list {
-      max-height: 130px;
-      overflow-y: auto;
+    /* ── Threat categories ── */
+    .category-list {
+      border-bottom: 1px solid #1e2230;
+      min-height: 36px;
     }
-    .blocked-list::-webkit-scrollbar { width: 4px; }
-    .blocked-list::-webkit-scrollbar-track { background: #0f1117; }
-    .blocked-list::-webkit-scrollbar-thumb { background: #2a2d3a; border-radius: 2px; }
-
-    .blocked-item {
+    .category-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 16px;
+      padding: 5px 14px;
+      font-size: 11px;
       border-bottom: 1px solid #141720;
-      font-size: 11px;
     }
-    .blocked-item:last-child { border-bottom: none; }
-    .blocked-dot { width: 5px; height: 5px; border-radius: 50%; background: #f56565; flex-shrink: 0; }
-    .blocked-domain { color: #e2e8f0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .blocked-type { color: #4a5568; font-size: 10px; flex-shrink: 0; }
-
-    .empty-state {
-      padding: 16px;
-      text-align: center;
+    .category-row:last-child { border-bottom: none; }
+    .cat-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .cat-name { flex: 1; color: #cbd5e0; }
+    .cat-count {
+      font-size: 10px;
       color: #4a5568;
+      white-space: nowrap;
+    }
+    .cat-count strong { color: #e2e8f0; }
+
+    .clean-state {
+      padding: 10px 14px;
       font-size: 11px;
+      color: #4a5568;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .clean-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #00d4aa;
+      flex-shrink: 0;
     }
 
-    /* Footer */
+    /* ── Fingerprint defense grid ── */
+    .defense-section {
+      border-bottom: 1px solid #1e2230;
+      padding-bottom: 8px;
+    }
+    .defense-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      padding: 0 14px 4px;
+    }
+    .defense-item {
+      background: #141720;
+      border: 1px solid #1e2230;
+      border-radius: 5px;
+      padding: 5px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .defense-icon {
+      font-size: 11px;
+      line-height: 1;
+    }
+    .defense-icon.active   { color: #00d4aa; }
+    .defense-icon.detected { color: #f56565; }
+    .defense-icon.inactive { color: #2a2d3a; }
+    .defense-name {
+      font-size: 9px;
+      color: #4a5568;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Footer ── */
     .footer {
-      padding: 10px 16px;
+      padding: 8px 14px;
       display: flex;
       gap: 6px;
     }
@@ -132,8 +219,8 @@
       border: 1px solid #1e2230;
       border-radius: 6px;
       color: #94a3b8;
-      font-size: 12px;
-      padding: 7px 12px;
+      font-size: 11px;
+      padding: 7px 10px;
       cursor: pointer;
       text-align: center;
       transition: border-color 0.15s, color 0.15s;
@@ -144,8 +231,8 @@
       border: 1px solid #1e2230;
       border-radius: 6px;
       color: #94a3b8;
-      font-size: 14px;
-      padding: 7px 10px;
+      font-size: 13px;
+      padding: 7px 9px;
       cursor: pointer;
       line-height: 1;
       transition: border-color 0.15s, color 0.15s;
@@ -156,36 +243,76 @@
 <body>
   <div class="header">
     <img src="icons/icon48.png" alt="Eidolon">
-    <h1>Eidolon</h1>
+    <div class="header-title">
+      <h1>Eidolon <span class="by-mieza">by Mieza</span></h1>
+    </div>
     <button class="toggle" id="toggle">ON</button>
   </div>
 
-  <div class="status" id="status">
+  <div class="status">
     <div class="dot" id="dot"></div>
-    <span id="status-text">Protected</span>
+    <span id="status-text">Privacy Intelligence Active</span>
   </div>
 
-  <div class="stats">
-    <div class="stat">
-      <span class="stat-value" id="blocked-count">0</span>
-      <span class="stat-label">Blocked<br>this page</span>
+  <!-- Privacy Score -->
+  <div class="score-section">
+    <div class="score-ring">
+      <svg viewBox="0 0 64 64">
+        <circle class="score-ring-bg" cx="32" cy="32" r="27"/>
+        <circle class="score-ring-fill" id="score-arc" cx="32" cy="32" r="27"
+          stroke-dasharray="169.6" stroke-dashoffset="0" stroke="#00d4aa"/>
+      </svg>
+      <div class="score-number" id="score-number" style="color:#00d4aa">100</div>
     </div>
-    <div class="stat">
-      <span class="stat-value" id="canvas-val">✓</span>
-      <span class="stat-label">Canvas<br>spoofed</span>
-    </div>
-    <div class="stat">
-      <span class="stat-value" id="webrtc-val">✓</span>
-      <span class="stat-label">WebRTC<br>protected</span>
+    <div class="score-info">
+      <div class="score-label-text" id="score-label" style="color:#00d4aa">Minimal Risk</div>
+      <div class="score-sublabel">Site privacy score</div>
+      <div class="score-blocked"><strong id="blocked-count">0</strong> trackers blocked this page</div>
     </div>
   </div>
 
-  <div class="blocked-list" id="blocked-list">
-    <div class="empty-state" id="empty-state">No trackers blocked yet on this page.</div>
+  <!-- Threat Intelligence -->
+  <div class="section-hdr">Threat Intelligence</div>
+  <div class="category-list" id="category-list">
+    <div class="clean-state" id="clean-state">
+      <div class="clean-dot"></div>
+      No threats detected on this page
+    </div>
+  </div>
+
+  <!-- Fingerprint Defense -->
+  <div class="defense-section">
+    <div class="section-hdr">Fingerprint Defense</div>
+    <div class="defense-grid">
+      <div class="defense-item">
+        <span class="defense-icon" id="def-canvas">✓</span>
+        <span class="defense-name">Canvas</span>
+      </div>
+      <div class="defense-item">
+        <span class="defense-icon" id="def-webrtc">✓</span>
+        <span class="defense-name">WebRTC</span>
+      </div>
+      <div class="defense-item">
+        <span class="defense-icon" id="def-audio">○</span>
+        <span class="defense-name">Audio</span>
+      </div>
+      <div class="defense-item">
+        <span class="defense-icon" id="def-webgl">○</span>
+        <span class="defense-name">WebGL</span>
+      </div>
+      <div class="defense-item">
+        <span class="defense-icon" id="def-font">○</span>
+        <span class="defense-name">Fonts</span>
+      </div>
+      <div class="defense-item">
+        <span class="defense-icon" id="def-hardware">○</span>
+        <span class="defense-name">Hardware</span>
+      </div>
+    </div>
   </div>
 
   <div class="footer">
-    <button class="dashboard-btn" id="dashboard-btn">View full request log &rarr;</button>
+    <button class="dashboard-btn" id="dashboard-btn">View Full Analysis &rarr;</button>
     <button class="settings-btn" id="settings-btn" title="Settings">&#9881;</button>
   </div>
 

@@ -3,177 +3,259 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eidolon — Dashboard</title>
+  <title>Eidolon — Privacy Analysis</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: #0a0c10;
       color: #e2e8f0;
       font-size: 13px;
       min-height: 100vh;
     }
 
-    /* Top nav */
+    /* ── Top nav ── */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 28px;
+      padding: 14px 28px;
       background: #0f1117;
       border-bottom: 1px solid #1e2230;
       position: sticky;
       top: 0;
       z-index: 10;
+      gap: 16px;
     }
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
     }
-    .logo img { width: 32px; height: 32px; }
-    .logo h1 { font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
-    .logo span { color: #00d4aa; }
+    .logo img { width: 28px; height: 28px; }
+    .logo-text h1 { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; }
+    .logo-text .by { font-size: 10px; color: #4a5568; font-weight: 400; }
 
-    /* Summary tiles */
+    /* ── Summary tiles ── */
     .summary {
       display: flex;
-      gap: 16px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
     .tile {
       background: #141720;
       border: 1px solid #1e2230;
-      border-radius: 8px;
-      padding: 10px 20px;
+      border-radius: 7px;
+      padding: 8px 16px;
       text-align: right;
+      min-width: 80px;
     }
-    .tile-value { font-size: 24px; font-weight: 700; color: #00d4aa; }
-    .tile-label { font-size: 10px; color: #64748b; letter-spacing: 0.5px; text-transform: uppercase; }
+    .tile-value { font-size: 20px; font-weight: 700; color: #00d4aa; }
+    .tile-label { font-size: 9px; color: #64748b; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 1px; }
 
-    /* Main content */
-    main { padding: 24px 28px; }
+    /* ── Refresh button ── */
+    .refresh-btn {
+      background: #141720;
+      border: 1px solid #1e2230;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 11px;
+      padding: 6px 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .refresh-btn:hover { border-color: #00d4aa; color: #00d4aa; }
+
+    /* ── Main content ── */
+    main { padding: 20px 28px; }
 
     .section-title {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: #64748b;
+      color: #4a5568;
       margin-bottom: 12px;
+      font-weight: 600;
     }
 
-    /* Tab cards */
+    /* ── Tab cards ── */
     .tab-card {
       background: #0f1117;
       border: 1px solid #1e2230;
       border-radius: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       overflow: hidden;
     }
     .tab-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+      gap: 10px;
+      padding: 10px 14px;
       cursor: pointer;
       user-select: none;
       transition: background 0.1s;
     }
     .tab-header:hover { background: #141720; }
 
-    .tab-url {
-      flex: 1;
+    /* Score badge in card header */
+    .tab-score {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #1e2230;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .tab-info { flex: 1; overflow: hidden; }
+    .tab-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: #e2e8f0;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 12px;
-      color: #94a3b8;
     }
-    .tab-url strong { color: #e2e8f0; font-weight: 500; }
+    .tab-url {
+      font-size: 10px;
+      color: #4a5568;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
 
+    .tab-badges {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      flex-shrink: 0;
+    }
     .badge {
       background: #1a1d27;
       border: 1px solid #2a2d3a;
-      border-radius: 12px;
-      padding: 2px 10px;
-      font-size: 11px;
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 10px;
       color: #f56565;
       font-weight: 600;
       white-space: nowrap;
     }
     .badge.green { color: #00d4aa; border-color: #00d4aa44; background: #00d4aa0f; }
     .badge.zero  { color: #4a5568; }
+    .badge.warn  { color: #f6ad55; border-color: #f6ad5544; background: #f6ad550f; }
 
-    .chevron { color: #4a5568; font-size: 11px; transition: transform 0.2s; }
+    .chevron { color: #4a5568; font-size: 10px; transition: transform 0.2s; flex-shrink: 0; }
     .tab-card.open .chevron { transform: rotate(90deg); }
 
-    /* Request table */
-    .request-table {
+    /* ── Expanded detail ── */
+    .tab-detail {
       display: none;
       border-top: 1px solid #1e2230;
     }
-    .tab-card.open .request-table { display: block; }
+    .tab-card.open .tab-detail { display: block; }
 
+    /* Category breakdown inside card */
+    .card-categories {
+      padding: 10px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      border-bottom: 1px solid #1e2230;
+    }
+    .cat-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #141720;
+      border: 1px solid #1e2230;
+      border-radius: 12px;
+      padding: 3px 9px;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+    .cat-chip-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Probe detections */
+    .card-probes {
+      padding: 8px 14px;
+      border-bottom: 1px solid #1e2230;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .probe-chip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #1a0a0a;
+      border: 1px solid #f5656544;
+      border-radius: 10px;
+      padding: 3px 8px;
+      font-size: 10px;
+      color: #f56565;
+    }
+    .probe-detail-row {
+      padding: 6px 14px 8px;
+      font-size: 10px;
+      color: #4a5568;
+      line-height: 1.5;
+      border-bottom: 1px solid #1e2230;
+    }
+
+    /* Request table */
+    .request-table { }
     .request-row {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
-      padding: 7px 16px;
+      padding: 5px 14px;
       border-bottom: 1px solid #0a0c10;
-      font-size: 11px;
+      font-size: 10px;
     }
     .request-row:last-child { border-bottom: none; }
-    .request-row.header {
+    .request-row.hdr {
       background: #0a0c10;
       color: #4a5568;
-      font-size: 10px;
+      font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 5px 16px;
+      padding: 4px 14px;
     }
-
-    .domain { color: #e2e8f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .type   { color: #64748b; }
-    .reason { color: #f56565; }
-    .time   { color: #4a5568; text-align: right; }
-
-    /* Protections row */
-    .protections {
-      display: flex;
-      gap: 8px;
-      padding: 8px 16px;
-      background: #0a0c10;
-      border-top: 1px solid #1e2230;
-    }
+    .req-domain { color: #e2e8f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .req-type   { color: #64748b; }
+    .req-cat    { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .req-time   { color: #4a5568; text-align: right; }
 
     .empty-tabs {
       text-align: center;
       padding: 60px 0;
       color: #4a5568;
     }
-    .empty-tabs p { font-size: 14px; margin-bottom: 8px; }
+    .empty-tabs p    { font-size: 14px; margin-bottom: 8px; }
     .empty-tabs small { font-size: 11px; }
-
-    /* Refresh button */
-    .refresh-btn {
-      background: #141720;
-      border: 1px solid #1e2230;
-      border-radius: 6px;
-      color: #94a3b8;
-      font-size: 12px;
-      padding: 6px 14px;
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .refresh-btn:hover { border-color: #00d4aa; color: #00d4aa; }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">
       <img src="icons/icon48.png" alt="Eidolon">
-      <h1>Eid<span>olon</span></h1>
+      <div class="logo-text">
+        <h1>Eidolon</h1>
+        <div class="by">Browser Privacy Intelligence &mdash; by Mieza</div>
+      </div>
     </div>
     <div class="summary">
       <div class="tile">
@@ -181,22 +263,24 @@
         <div class="tile-label">Total Blocked</div>
       </div>
       <div class="tile">
+        <div class="tile-value" id="total-probes">0</div>
+        <div class="tile-label">FP Probes</div>
+      </div>
+      <div class="tile">
         <div class="tile-value" id="tabs-active">0</div>
         <div class="tile-label">Active Tabs</div>
       </div>
     </div>
+    <button class="refresh-btn" id="refresh-btn">Refresh</button>
   </header>
 
   <main>
-    <div class="section-title">Active Tabs</div>
+    <div class="section-title">Active Tab Analysis</div>
     <div id="tabs-container">
       <div class="empty-tabs">
         <p>No tab data yet.</p>
         <small>Browse a few pages and come back.</small>
       </div>
-    </div>
-    <div style="margin-top: 16px; text-align: right;">
-      <button class="refresh-btn" id="refresh-btn">Refresh</button>
     </div>
   </main>
 

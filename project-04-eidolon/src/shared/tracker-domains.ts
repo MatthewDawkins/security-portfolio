@@ -1,478 +1,284 @@
-// Curated list of known tracker/ad domains.
-// Subdomains are matched automatically — only root domains needed here.
-export const TRACKER_DOMAINS = new Set<string>([
-  // Google Analytics & Ads
-  'google-analytics.com',
-  'googletagmanager.com',
-  'googletagservices.com',
-  'doubleclick.net',
-  'googlesyndication.com',
-  'googleadservices.com',
-  'adservice.google.com',
-  'pagead2.googlesyndication.com',
-  'stats.g.doubleclick.net',
-
-  // Facebook / Meta
-  'connect.facebook.net',
-  'graph.facebook.com',
-  'an.facebook.com',
-  'pixel.facebook.com',
-  'tr.facebook.com',
-
-  // Twitter / X
-  'analytics.twitter.com',
-  'static.ads-twitter.com',
-  'ads.twitter.com',
-  'syndication.twitter.com',
-  't.co',
-
-  // LinkedIn
-  'snap.licdn.com',
-  'platform.linkedin.com',
-  'ads.linkedin.com',
-  'bizographics.com',
-
-  // Amazon Ads
-  'amazon-adsystem.com',
-  'aax.amazon-adsystem.com',
-  'fls-na.amazon.com',
-  'adsystem.amazon.com',
-
-  // Microsoft / Bing
-  'bat.bing.com',
-  'clarity.ms',
-  'ads.microsoft.com',
-  'c.bing.com',
-
-  // Adobe Analytics / Marketing Cloud
-  'omtrdc.net',
-  'demdex.net',
-  'adobedtm.com',
-  '2o7.net',
-  'adobedc.net',
-  'omniture.com',
-  'tt.omtrdc.net',
-
-  // Hotjar
-  'hotjar.com',
-  'static.hotjar.com',
-  'script.hotjar.com',
-  'insights.hotjar.com',
-
-  // Mixpanel
-  'api.mixpanel.com',
-  'cdn.mixpanel.com',
-
-  // Amplitude
-  'api.amplitude.com',
-  'cdn.amplitude.com',
-  'analytics.amplitude.com',
-
-  // Segment
-  'cdn.segment.com',
-  'api.segment.io',
-  'cdn.segment.io',
-
-  // Heap
-  'heapanalytics.com',
-  'cdn.heapanalytics.com',
-
-  // FullStory
-  'fullstory.com',
-  'rs.fullstory.com',
-  'edge.fullstory.com',
-
-  // Intercom
-  'js.intercomcdn.com',
-  'api.intercom.io',
-  'widget.intercom.io',
-  'nexus-websocket-a.intercom.io',
-
-  // HubSpot
-  'js.hs-analytics.net',
-  'js.hs-scripts.com',
-  'track.hubspot.com',
-  'forms.hsforms.com',
-  'cta-service-cms2.hubspot.com',
-
-  // Pardot / Salesforce
-  'pi.pardot.com',
-  'go.pardot.com',
-
-  // Marketo
-  'munchkin.marketo.net',
-  'app.marketo.com',
-
-  // Quantcast
-  'quantserve.com',
-  'pixel.quantserve.com',
-
-  // AppNexus / Xandr
-  'adnxs.com',
-  'ib.adnxs.com',
-
-  // Criteo
-  'dis.criteo.com',
-  'static.criteo.net',
-  'gum.criteo.com',
-  'sslwidget.criteo.com',
-  'bidder.criteo.com',
-
-  // Outbrain
-  'widgets.outbrain.com',
-  'log.outbrain.com',
-  'amplify.outbrain.com',
-
-  // Taboola
-  'cdn.taboola.com',
-  'trc.taboola.com',
-  'log.taboola.com',
-  'nr-data.taboola.com',
-
-  // Yandex Metrica
-  'mc.yandex.ru',
-  'mc.yandex.com',
-
-  // Baidu Analytics
-  'hm.baidu.com',
-
-  // TikTok
-  'analytics.tiktok.com',
-  'ads-api.tiktok.com',
-  'log.tiktokv.com',
-  'ad.tiktok.com',
-
-  // Snapchat
-  'tr.snapchat.com',
-  'sc-static.net',
-
-  // Pinterest
-  'log.pinterest.com',
-  'ct.pinterest.com',
-  'ads.pinterest.com',
-  'trk.pinterest.com',
-
-  // Reddit
-  'alb.reddit.com',
-  'pixel.reddit.com',
-  'redd.it',
-
-  // Nielsen
-  'imrworldwide.com',
-  'secure-dcr.imrworldwide.com',
-  'cdn-gl.imrworldwide.com',
-
-  // comScore
-  'scorecardresearch.com',
-  'sb.scorecardresearch.com',
-  'pixel.scorecardresearch.com',
-  'beacon.scorecardresearch.com',
-
-  // Chartbeat
-  'static.chartbeat.com',
-  'ping.chartbeat.net',
-
-  // Parse.ly
-  'srv.pixel.parsely.com',
-  'pixel.parsely.com',
-  'api.parsely.com',
-
-  // New Relic (browser agent)
-  'bam.nr-data.net',
-  'js-agent.newrelic.com',
-  'nr-data.net',
-
-  // AddThis
-  's7.addthis.com',
-  'm.addthis.com',
-  'addthis.com',
-
-  // ShareThis
-  'w.sharethis.com',
-  'platform-api.sharethis.com',
-
-  // Disqus
-  'a.disquscdn.com',
-  'disqus.com',
-  'disqusads.com',
-
-  // DoubleVerify
-  'cdn.doubleverify.com',
-  'pub.doubleverify.com',
-  'rtb.doubleverify.com',
-
-  // Integral Ad Science
-  'pixel.adsafeprotected.com',
-  'fw.adsafeprotected.com',
-
-  // Moat
-  'tags.moatads.com',
-  'z.moatads.com',
-
-  // The Trade Desk
-  'match.adsrvr.org',
-  'insight.adsrvr.org',
-  'adsrvr.org',
-
-  // MediaMath
-  'pixel.mathtag.com',
-  'bh.contextweb.com',
-  'mathtag.com',
-
-  // Pubmatic
-  'ads.pubmatic.com',
-  'image.pubmatic.com',
-  'simage2.pubmatic.com',
-
-  // OpenX
-  'us-u.openx.net',
-  'openx.net',
-
-  // Rubicon / Magnite
-  'fastlane.rubiconproject.com',
-  'beacon.rubiconproject.com',
-  'rubiconproject.com',
-
-  // Index Exchange
-  'js-sec.indexww.com',
-  'r.casalemedia.com',
-  'casalemedia.com',
-
-  // Sovrn
-  'ap.lijit.com',
-  'beacon.lijit.com',
-
-  // Lucky Orange
-  'd.luckyorange.net',
-  'cs.luckyorange.net',
-
-  // Mouseflow
-  'cdn.mouseflow.com',
-  'mouseflow.com',
-
-  // LogRocket
-  'cdn.lr-ingest.io',
-  'r.lr-ingest.io',
-
-  // Qualtrics
-  'siteintercept.qualtrics.com',
-  'qualtrics.com',
-
-  // Optimizely
-  'cdn.optimizely.com',
-  'logx.optimizely.com',
-
-  // VWO
-  'dev.visualwebsiteoptimizer.com',
-  'visualwebsiteoptimizer.com',
-
-  // Crazy Egg
-  'script.crazyegg.com',
-
-  // LiveRamp
-  'idsync.rlcdn.com',
-  'rlcdn.com',
-
-  // Oracle / BlueKai DMP
-  'bluekai.com',
-  'bkrtx.com',
-  'nexac.com',
-
-  // Krux / Salesforce DMP
-  'krxd.net',
-
-  // BidSwitch
-  'bidswitch.net',
-
-  // Smart AdServer
-  'smartadserver.com',
-  'sskzlv.com',
-
-  // ShareThrough
-  'sharethrough.com',
-
-  // TripleLift
-  'triplelift.com',
-  '3lift.com',
-
-  // Sonobi
-  'sonobi.com',
-
-  // District M
-  'districtm.io',
-
-  // EMX Digital
-  'emxdgt.com',
-
-  // 33Across
-  '33across.com',
-  'tynt.com',
-
-  // Conversant / Epsilon
-  'conversantmedia.com',
-  'epsilon.com',
-
-  // AdRoll
-  'adroll.com',
-  'd.adroll.com',
-
-  // Yieldmo
-  'yieldmo.com',
-
-  // Kargo
-  'kargo.com',
-
-  // SpotX
-  'spotx.tv',
-  'spotxchange.com',
-
-  // FreeWheel
-  'freewheel.tv',
-  'adtechfwd.com',
-
-  // Teads
-  'teads.tv',
-  'teads.com',
-
-  // Nativo
-  'nativo.com',
-  'postrelease.com',
-
-  // Sizmek
-  'serving-sys.com',
-  'mediamind.com',
-
-  // Exponential (Tribal Fusion)
-  'exponential.com',
-  'tribalfusion.com',
-
-  // Conversant / ValueClick
-  'valueclick.com',
-  'fastclick.net',
-
-  // Undertone
-  'undertone.com',
-
-  // GumGum
-  'gumgum.com',
-
-  // Lotame
-  'crwdcntrl.net',
-  'lotame.com',
-
-  // LiveIntent
-  'liadm.com',
-  'liveintent.com',
-
-  // SessionCam
-  'sessioncam.com',
-
-  // ClickTale
-  'clicktale.net',
-  'clicktale.com',
-
-  // Pendo
-  'pendo.io',
-  'cdn.pendo.io',
-
-  // Appcues
-  'appcues.com',
-  'fast.appcues.com',
-
-  // WalkMe
-  'walkme.com',
-  'cdn.walkme.com',
-
-  // Drift / Driftt
-  'drift.com',
-  'driftt.com',
-  'js.driftt.com',
-
-  // Klaviyo
-  'klaviyo.com',
-  'static.klaviyo.com',
-
-  // Braze / Appboy
-  'braze.com',
-  'appboy.com',
-  'iad.appboy.com',
-
-  // OneSignal
-  'onesignal.com',
-  'cdn.onesignal.com',
-
-  // Iterable
-  'iterable.com',
-
-  // Sailthru
-  'sailthru.com',
-
-  // Threat Metrix / LexisNexis
-  'threatmetrix.com',
-  'h.online-metrix.net',
-
-  // Kount
-  'kount.net',
-
-  // Sift
-  'sift.com',
-  'siftscience.com',
-
-  // Adform
-  'adform.net',
-  'track.adform.net',
-
-  // MediaNet
-  'media.net',
-
-  // Yahoo / Verizon Media
-  'yahoo.com',
-  'yimg.com',
-  'advertising.yahoo.com',
-
-  // Zemanta
-  'zemanta.com',
-
-  // Bidtellect
-  'bidtellect.com',
-
-  // Amobee
-  'amobee.com',
-  'turn.com',
-  'tribalfusion.com',
-
-  // Pulsepoint
-  'pulsepoint.com',
-  'contextweb.com',
-
-  // Xaxis
-  'xaxis.com',
-
-  // Dstillery
-  'dstillery.com',
-  'media6degrees.com',
-
-  // Eyeota
-  'eyeota.net',
-
-  // Bombora
-  'bombora.com',
-
-  // Dataxu
-  'dataxu.com',
+import { ThreatCategory } from './types'
+
+// Domain → threat category map.
+// Subdomains are matched automatically — only root domains needed.
+// Keep in sync with scripts/generate-rules.js (blocking list).
+export const TRACKER_MAP = new Map<string, ThreatCategory>([
+
+  // ── Behavioral Analytics ─────────────────────────────────────────────────
+  ['google-analytics.com',        'behavioral-analytics'],
+  ['bat.bing.com',                'behavioral-analytics'],
+  ['mc.yandex.ru',                'behavioral-analytics'],
+  ['mc.yandex.com',               'behavioral-analytics'],
+  ['hm.baidu.com',                'behavioral-analytics'],
+  ['api.mixpanel.com',            'behavioral-analytics'],
+  ['cdn.mixpanel.com',            'behavioral-analytics'],
+  ['api.amplitude.com',           'behavioral-analytics'],
+  ['cdn.amplitude.com',           'behavioral-analytics'],
+  ['analytics.amplitude.com',     'behavioral-analytics'],
+  ['cdn.segment.com',             'behavioral-analytics'],
+  ['api.segment.io',              'behavioral-analytics'],
+  ['cdn.segment.io',              'behavioral-analytics'],
+  ['heapanalytics.com',           'behavioral-analytics'],
+  ['cdn.heapanalytics.com',       'behavioral-analytics'],
+  ['srv.pixel.parsely.com',       'behavioral-analytics'],
+  ['pixel.parsely.com',           'behavioral-analytics'],
+  ['api.parsely.com',             'behavioral-analytics'],
+  ['pendo.io',                    'behavioral-analytics'],
+  ['cdn.pendo.io',                'behavioral-analytics'],
+
+  // ── Session Replay ────────────────────────────────────────────────────────
+  ['hotjar.com',                  'session-replay'],
+  ['static.hotjar.com',           'session-replay'],
+  ['script.hotjar.com',           'session-replay'],
+  ['insights.hotjar.com',         'session-replay'],
+  ['fullstory.com',               'session-replay'],
+  ['rs.fullstory.com',            'session-replay'],
+  ['edge.fullstory.com',          'session-replay'],
+  ['d.luckyorange.net',           'session-replay'],
+  ['cs.luckyorange.net',          'session-replay'],
+  ['cdn.mouseflow.com',           'session-replay'],
+  ['mouseflow.com',               'session-replay'],
+  ['cdn.lr-ingest.io',            'session-replay'],
+  ['r.lr-ingest.io',              'session-replay'],
+  ['sessioncam.com',              'session-replay'],
+  ['clicktale.net',               'session-replay'],
+  ['clicktale.com',               'session-replay'],
+  ['script.crazyegg.com',         'session-replay'],
+  ['clarity.ms',                  'session-replay'],
+
+  // ── Social Tracking ───────────────────────────────────────────────────────
+  ['connect.facebook.net',        'social-tracking'],
+  ['graph.facebook.com',          'social-tracking'],
+  ['an.facebook.com',             'social-tracking'],
+  ['pixel.facebook.com',          'social-tracking'],
+  ['tr.facebook.com',             'social-tracking'],
+  ['analytics.twitter.com',       'social-tracking'],
+  ['static.ads-twitter.com',      'social-tracking'],
+  ['ads.twitter.com',             'social-tracking'],
+  ['syndication.twitter.com',     'social-tracking'],
+  ['t.co',                        'social-tracking'],
+  ['snap.licdn.com',              'social-tracking'],
+  ['platform.linkedin.com',       'social-tracking'],
+  ['ads.linkedin.com',            'social-tracking'],
+  ['bizographics.com',            'social-tracking'],
+  ['analytics.tiktok.com',        'social-tracking'],
+  ['ads-api.tiktok.com',          'social-tracking'],
+  ['log.tiktokv.com',             'social-tracking'],
+  ['ad.tiktok.com',               'social-tracking'],
+  ['tr.snapchat.com',             'social-tracking'],
+  ['sc-static.net',               'social-tracking'],
+  ['log.pinterest.com',           'social-tracking'],
+  ['ct.pinterest.com',            'social-tracking'],
+  ['ads.pinterest.com',           'social-tracking'],
+  ['trk.pinterest.com',           'social-tracking'],
+  ['alb.reddit.com',              'social-tracking'],
+  ['pixel.reddit.com',            'social-tracking'],
+  ['s7.addthis.com',              'social-tracking'],
+  ['m.addthis.com',               'social-tracking'],
+  ['addthis.com',                 'social-tracking'],
+  ['w.sharethis.com',             'social-tracking'],
+  ['platform-api.sharethis.com',  'social-tracking'],
+  ['a.disquscdn.com',             'social-tracking'],
+  ['disqus.com',                  'social-tracking'],
+  ['disqusads.com',               'social-tracking'],
+
+  // ── Data Broker ───────────────────────────────────────────────────────────
+  ['omtrdc.net',                  'data-broker'],
+  ['demdex.net',                  'data-broker'],
+  ['adobedtm.com',                'data-broker'],
+  ['2o7.net',                     'data-broker'],
+  ['adobedc.net',                 'data-broker'],
+  ['omniture.com',                'data-broker'],
+  ['tt.omtrdc.net',               'data-broker'],
+  ['imrworldwide.com',            'data-broker'],
+  ['secure-dcr.imrworldwide.com', 'data-broker'],
+  ['cdn-gl.imrworldwide.com',     'data-broker'],
+  ['scorecardresearch.com',       'data-broker'],
+  ['sb.scorecardresearch.com',    'data-broker'],
+  ['pixel.scorecardresearch.com', 'data-broker'],
+  ['idsync.rlcdn.com',            'data-broker'],
+  ['rlcdn.com',                   'data-broker'],
+  ['bluekai.com',                 'data-broker'],
+  ['bkrtx.com',                   'data-broker'],
+  ['nexac.com',                   'data-broker'],
+  ['krxd.net',                    'data-broker'],
+  ['crwdcntrl.net',               'data-broker'],
+  ['lotame.com',                  'data-broker'],
+  ['eyeota.net',                  'data-broker'],
+  ['bombora.com',                 'data-broker'],
+  ['dstillery.com',               'data-broker'],
+  ['quantserve.com',              'data-broker'],
+  ['pixel.quantserve.com',        'data-broker'],
+
+  // ── Marketing Automation ──────────────────────────────────────────────────
+  ['js.intercomcdn.com',                  'marketing-automation'],
+  ['api.intercom.io',                     'marketing-automation'],
+  ['widget.intercom.io',                  'marketing-automation'],
+  ['nexus-websocket-a.intercom.io',       'marketing-automation'],
+  ['js.hs-analytics.net',                 'marketing-automation'],
+  ['js.hs-scripts.com',                   'marketing-automation'],
+  ['track.hubspot.com',                   'marketing-automation'],
+  ['forms.hsforms.com',                   'marketing-automation'],
+  ['cta-service-cms2.hubspot.com',        'marketing-automation'],
+  ['pi.pardot.com',                       'marketing-automation'],
+  ['go.pardot.com',                       'marketing-automation'],
+  ['munchkin.marketo.net',                'marketing-automation'],
+  ['app.marketo.com',                     'marketing-automation'],
+  ['klaviyo.com',                         'marketing-automation'],
+  ['static.klaviyo.com',                  'marketing-automation'],
+  ['braze.com',                           'marketing-automation'],
+  ['appboy.com',                          'marketing-automation'],
+  ['iad.appboy.com',                      'marketing-automation'],
+  ['onesignal.com',                       'marketing-automation'],
+  ['cdn.onesignal.com',                   'marketing-automation'],
+  ['iterable.com',                        'marketing-automation'],
+  ['sailthru.com',                        'marketing-automation'],
+  ['drift.com',                           'marketing-automation'],
+  ['driftt.com',                          'marketing-automation'],
+  ['js.driftt.com',                       'marketing-automation'],
+  ['appcues.com',                         'marketing-automation'],
+  ['fast.appcues.com',                    'marketing-automation'],
+  ['walkme.com',                          'marketing-automation'],
+  ['cdn.walkme.com',                      'marketing-automation'],
+
+  // ── A/B Testing ───────────────────────────────────────────────────────────
+  ['cdn.optimizely.com',                  'ab-testing'],
+  ['logx.optimizely.com',                 'ab-testing'],
+  ['dev.visualwebsiteoptimizer.com',      'ab-testing'],
+  ['visualwebsiteoptimizer.com',          'ab-testing'],
+  ['siteintercept.qualtrics.com',         'ab-testing'],
+
+  // ── Fraud Detection ───────────────────────────────────────────────────────
+  ['threatmetrix.com',            'fraud-detection'],
+  ['h.online-metrix.net',         'fraud-detection'],
+  ['kount.net',                   'fraud-detection'],
+  ['sift.com',                    'fraud-detection'],
+  ['siftscience.com',             'fraud-detection'],
+
+  // ── Telemetry ─────────────────────────────────────────────────────────────
+  ['bam.nr-data.net',             'telemetry'],
+  ['js-agent.newrelic.com',       'telemetry'],
+  ['nr-data.net',                 'telemetry'],
+  ['static.chartbeat.com',        'telemetry'],
+  ['ping.chartbeat.net',          'telemetry'],
+
+  // ── Ad Network ────────────────────────────────────────────────────────────
+  ['googletagmanager.com',        'ad-network'],
+  ['googletagservices.com',       'ad-network'],
+  ['doubleclick.net',             'ad-network'],
+  ['googlesyndication.com',       'ad-network'],
+  ['googleadservices.com',        'ad-network'],
+  ['adservice.google.com',        'ad-network'],
+  ['pagead2.googlesyndication.com', 'ad-network'],
+  ['stats.g.doubleclick.net',     'ad-network'],
+  ['amazon-adsystem.com',         'ad-network'],
+  ['aax.amazon-adsystem.com',     'ad-network'],
+  ['fls-na.amazon.com',           'ad-network'],
+  ['adsystem.amazon.com',         'ad-network'],
+  ['ads.microsoft.com',           'ad-network'],
+  ['c.bing.com',                  'ad-network'],
+  ['adnxs.com',                   'ad-network'],
+  ['ib.adnxs.com',                'ad-network'],
+  ['dis.criteo.com',              'ad-network'],
+  ['static.criteo.net',           'ad-network'],
+  ['gum.criteo.com',              'ad-network'],
+  ['sslwidget.criteo.com',        'ad-network'],
+  ['bidder.criteo.com',           'ad-network'],
+  ['widgets.outbrain.com',        'ad-network'],
+  ['log.outbrain.com',            'ad-network'],
+  ['amplify.outbrain.com',        'ad-network'],
+  ['cdn.taboola.com',             'ad-network'],
+  ['trc.taboola.com',             'ad-network'],
+  ['log.taboola.com',             'ad-network'],
+  ['cdn.doubleverify.com',        'ad-network'],
+  ['pub.doubleverify.com',        'ad-network'],
+  ['rtb.doubleverify.com',        'ad-network'],
+  ['pixel.adsafeprotected.com',   'ad-network'],
+  ['fw.adsafeprotected.com',      'ad-network'],
+  ['tags.moatads.com',            'ad-network'],
+  ['z.moatads.com',               'ad-network'],
+  ['match.adsrvr.org',            'ad-network'],
+  ['insight.adsrvr.org',          'ad-network'],
+  ['adsrvr.org',                  'ad-network'],
+  ['pixel.mathtag.com',           'ad-network'],
+  ['bh.contextweb.com',           'ad-network'],
+  ['mathtag.com',                 'ad-network'],
+  ['ads.pubmatic.com',            'ad-network'],
+  ['image.pubmatic.com',          'ad-network'],
+  ['simage2.pubmatic.com',        'ad-network'],
+  ['us-u.openx.net',              'ad-network'],
+  ['openx.net',                   'ad-network'],
+  ['fastlane.rubiconproject.com', 'ad-network'],
+  ['beacon.rubiconproject.com',   'ad-network'],
+  ['rubiconproject.com',          'ad-network'],
+  ['js-sec.indexww.com',          'ad-network'],
+  ['r.casalemedia.com',           'ad-network'],
+  ['casalemedia.com',             'ad-network'],
+  ['ap.lijit.com',                'ad-network'],
+  ['beacon.lijit.com',            'ad-network'],
+  ['bidswitch.net',               'ad-network'],
+  ['smartadserver.com',           'ad-network'],
+  ['sharethrough.com',            'ad-network'],
+  ['triplelift.com',              'ad-network'],
+  ['3lift.com',                   'ad-network'],
+  ['sonobi.com',                  'ad-network'],
+  ['districtm.io',                'ad-network'],
+  ['emxdgt.com',                  'ad-network'],
+  ['33across.com',                'ad-network'],
+  ['tynt.com',                    'ad-network'],
+  ['conversantmedia.com',         'ad-network'],
+  ['epsilon.com',                 'ad-network'],
+  ['adroll.com',                  'ad-network'],
+  ['d.adroll.com',                'ad-network'],
+  ['yieldmo.com',                 'ad-network'],
+  ['kargo.com',                   'ad-network'],
+  ['spotx.tv',                    'ad-network'],
+  ['spotxchange.com',             'ad-network'],
+  ['freewheel.tv',                'ad-network'],
+  ['adtechfwd.com',               'ad-network'],
+  ['teads.tv',                    'ad-network'],
+  ['teads.com',                   'ad-network'],
+  ['nativo.com',                  'ad-network'],
+  ['postrelease.com',             'ad-network'],
+  ['serving-sys.com',             'ad-network'],
+  ['exponential.com',             'ad-network'],
+  ['tribalfusion.com',            'ad-network'],
+  ['valueclick.com',              'ad-network'],
+  ['fastclick.net',               'ad-network'],
+  ['undertone.com',               'ad-network'],
+  ['gumgum.com',                  'ad-network'],
+  ['liadm.com',                   'ad-network'],
+  ['liveintent.com',              'ad-network'],
+  ['adform.net',                  'ad-network'],
+  ['track.adform.net',            'ad-network'],
+  ['media.net',                   'ad-network'],
+  ['advertising.yahoo.com',       'ad-network'],
+  ['amobee.com',                  'ad-network'],
+  ['turn.com',                    'ad-network'],
+  ['pulsepoint.com',              'ad-network'],
+  ['contextweb.com',              'ad-network'],
+  ['xaxis.com',                   'ad-network'],
+  ['dataxu.com',                  'ad-network'],
 ])
 
 /**
- * Returns true if the given hostname (or any parent domain) is a known tracker.
+ * Returns the threat category for a given hostname, or null if not a known tracker.
+ * Walks up subdomains: "foo.bar.doubleclick.net" → checks "bar.doubleclick.net", "doubleclick.net".
  */
-export function isTrackerDomain(hostname: string): boolean {
-  if (TRACKER_DOMAINS.has(hostname)) return true
+export function getTrackerCategory(hostname: string): ThreatCategory | null {
+  if (TRACKER_MAP.has(hostname)) return TRACKER_MAP.get(hostname)!
 
-  // Walk up subdomains: e.g. "foo.bar.google-analytics.com" → check "bar.google-analytics.com", "google-analytics.com"
   const parts = hostname.split('.')
   for (let i = 1; i < parts.length - 1; i++) {
-    if (TRACKER_DOMAINS.has(parts.slice(i).join('.'))) return true
+    const parent = parts.slice(i).join('.')
+    if (TRACKER_MAP.has(parent)) return TRACKER_MAP.get(parent)!
   }
 
-  return false
+  return null
+}
+
+/** Returns true if the hostname is a known tracker domain. */
+export function isTrackerDomain(hostname: string): boolean {
+  return getTrackerCategory(hostname) !== null
 }

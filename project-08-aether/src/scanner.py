@@ -1,11 +1,11 @@
 """
-Scanner — instantiates all check modules and runs them against the target account/region.
+Scanner — instantiates all check modules and runs them against the target account/region/URL.
 """
 
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import boto3
-from botocore.exceptions import ClientError, NoCredentialsError, NoRegionError
+from botocore.exceptions import ClientError, NoCredentialsError
 
 from src.checks.iam import IAMChecks
 from src.checks.s3 import S3Checks
@@ -13,15 +13,22 @@ from src.checks.ec2 import EC2Checks
 from src.checks.rds import RDSChecks
 from src.checks.cloudtrail import CloudTrailChecks
 from src.checks.vpc import VPCChecks
+from src.checks.web import WebChecks
+from src.checks.dns import DNSChecks
 from src.models import Finding
 
-CHECK_MODULES = [
+AWS_MODULES = [
     IAMChecks,
     S3Checks,
     EC2Checks,
     RDSChecks,
     CloudTrailChecks,
     VPCChecks,
+]
+
+WEB_MODULES = [
+    WebChecks,
+    DNSChecks,
 ]
 
 
@@ -46,31 +53,49 @@ def get_account_identity(session: boto3.Session) -> dict:
 
 
 def run_scan(
-    session: boto3.Session,
+    session: Optional[boto3.Session],
     region: str,
+    url: Optional[str] = None,
     progress_callback=None,
 ) -> Tuple[dict, List[Finding]]:
     """
-    Run all check modules and return (identity_info, sorted_findings).
+    Run AWS and/or web/DNS check modules.
 
     Args:
-        session:           Configured boto3 session
-        region:            AWS region to scan (regional checks)
-        progress_callback: Optional callable(module_name) called before each module runs
+        session:           boto3 session (None = skip AWS checks)
+        region:            AWS region for regional checks
+        url:               Target URL for web/DNS checks (None = skip)
+        progress_callback: Optional callable(module_name)
     """
-    identity = get_account_identity(session)
+    identity = get_account_identity(session) if session else {
+        "account_id": "n/a", "arn": "n/a", "user_id": "n/a", "region": region,
+    }
+    if url:
+        identity["url"] = url
+
     all_findings: List[Finding] = []
 
-    for CheckClass in CHECK_MODULES:
-        instance = CheckClass()
-        if progress_callback:
-            progress_callback(instance.service)
-        try:
-            findings = instance.run(session, region)
-            all_findings.extend(findings)
-        except Exception:
-            # Never let a single check crash the whole scan
-            continue
+    # AWS checks (only if session provided)
+    if session:
+        for CheckClass in AWS_MODULES:
+            instance = CheckClass()
+            if progress_callback:
+                progress_callback(instance.service)
+            try:
+                all_findings.extend(instance.run(session, region))
+            except Exception:
+                continue
+
+    # Web / DNS checks (only if URL provided)
+    if url:
+        for CheckClass in WEB_MODULES:
+            instance = CheckClass()
+            if progress_callback:
+                progress_callback(f"{instance.service} ({url})")
+            try:
+                all_findings.extend(instance.run(session, region, url=url))
+            except Exception:
+                continue
 
     all_findings.sort(key=lambda f: (f.severity_rank, f.service, f.check_id))
     return identity, all_findings

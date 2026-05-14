@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Eidolon",
-  "version": "0.1.0",
-  "description": "Block fingerprinting, trackers, and WebRTC IP leaks. See exactly what tries to track you, per tab.",
+  "name": "Eidolon — Privacy Intelligence",
+  "version": "1.0.0",
+  "description": "Detect fingerprinting attacks, classify trackers by threat type, and score site privacy behavior. Browser privacy intelligence by Mieza.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -48,7 +48,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["canvas.js", "webrtc.js"],
+      "resources": ["canvas.js", "webrtc.js", "audio.js", "webgl.js", "fonts.js", "hardware.js"],
       "matches": ["<all_urls>"]
     }
   ]
