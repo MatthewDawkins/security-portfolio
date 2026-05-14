@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eidolon — Privacy Policy</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #1a202c;
+      background: #f7fafc;
+    }
+
+    header {
+      background: #00d4aa;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      margin-top: 0.35rem;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .last-updated {
+      font-size: 0.85rem;
+      color: #718096;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    p { margin-bottom: 0.9rem; color: #4a5568; }
+
+    ul {
+      margin: 0.5rem 0 0.9rem 1.4rem;
+      color: #4a5568;
+    }
+
+    ul li { margin-bottom: 0.35rem; }
+
+    .callout {
+      background: #ebfaf6;
+      border-left: 4px solid #00d4aa;
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+    }
+
+    .callout p { margin: 0; color: #2d6a5c; font-weight: 500; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.9rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      background: #edf2f7;
+      color: #2d3748;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #e2e8f0;
+      color: #4a5568;
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    a { color: #00a884; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Eidolon — Privacy Intelligence</h1>
+  <p>Privacy Policy for the Chrome Browser Extension</p>
+</header>
+
+<main>
+
+  <p class="last-updated">Last updated: May 2026</p>
+
+  <div class="callout">
+    <p>Eidolon operates entirely on your device. It collects no personal information, sends no data to any server, and requires no account.</p>
+  </div>
+
+  <h2>1. What Eidolon Does</h2>
+  <p>
+    Eidolon is a browser privacy extension that detects and blocks third-party tracking requests,
+    identifies browser fingerprinting attempts, and calculates a per-site privacy risk score.
+    All of this happens locally inside your browser. No information about your browsing leaves your device.
+  </p>
+
+  <h2>2. Data Collected and How It Is Used</h2>
+  <p>Eidolon records the following information in your browser's local storage solely to power the popup display and dashboard:</p>
+
+  <table>
+    <tr>
+      <th>Data</th>
+      <th>Where It Lives</th>
+      <th>Purpose</th>
+      <th>Sent Anywhere?</th>
+    </tr>
+    <tr>
+      <td>Blocked request URLs and domains</td>
+      <td>Local Chrome storage (session only)</td>
+      <td>Display threat counts and category breakdown in popup</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Fingerprint probe detections (e.g. AudioContext, WebGL)</td>
+      <td>Local Chrome storage (session only)</td>
+      <td>Display detected fingerprinting techniques in popup</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Per-tab privacy score</td>
+      <td>Computed in memory</td>
+      <td>Score ring displayed in popup and dashboard</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Extension settings (on/off toggles)</td>
+      <td>Local Chrome storage (persisted)</td>
+      <td>Remember your preferences between sessions</td>
+      <td>No</td>
+    </tr>
+  </table>
+
+  <p>
+    This data is never transmitted over the network, never written to a remote database,
+    and is not accessible to any website or third party. Blocked request records are cleared
+    when you close a tab or restart the browser.
+  </p>
+
+  <h2>3. Permissions Used</h2>
+  <p>The extension requests the following Chrome permissions, each for a specific functional reason:</p>
+
+  <table>
+    <tr>
+      <th>Permission</th>
+      <th>Why It Is Needed</th>
+    </tr>
+    <tr>
+      <td><code>declarativeNetRequest</code></td>
+      <td>Block tracker and fingerprinting script requests before they load</td>
+    </tr>
+    <tr>
+      <td><code>declarativeNetRequestFeedback</code></td>
+      <td>Observe which requests were blocked so they can be shown in the dashboard</td>
+    </tr>
+    <tr>
+      <td><code>scripting</code></td>
+      <td>Inject fingerprint detector scripts into page contexts to detect probing</td>
+    </tr>
+    <tr>
+      <td><code>storage</code></td>
+      <td>Save blocked-request records and settings locally on your device</td>
+    </tr>
+    <tr>
+      <td><code>tabs</code></td>
+      <td>Associate privacy scores and blocked counts with the correct browser tab</td>
+    </tr>
+    <tr>
+      <td><code>activeTab</code></td>
+      <td>Read the URL of the currently active tab to display its privacy score</td>
+    </tr>
+    <tr>
+      <td><code>webRequest</code></td>
+      <td>Observe outgoing requests to classify them against the tracker domain list</td>
+    </tr>
+    <tr>
+      <td><code>host_permissions: &lt;all_urls&gt;</code></td>
+      <td>Required to inject fingerprint detectors and observe requests on all websites</td>
+    </tr>
+  </table>
+
+  <h2>4. Data Sharing</h2>
+  <p>
+    Eidolon does not share any data with third parties. There is no analytics, no telemetry,
+    no crash reporting service, and no advertising SDK embedded in this extension.
+    The tracker domain list used for blocking is compiled into the extension at build time
+    and does not make network requests to update itself.
+  </p>
+
+  <h2>5. Children's Privacy</h2>
+  <p>
+    Eidolon does not knowingly collect any information from users of any age.
+    Because no personal data is collected at all, the extension does not implicate
+    children's privacy regulations such as COPPA.
+  </p>
+
+  <h2>6. Changes to This Policy</h2>
+  <p>
+    If this policy changes materially, the updated version will be published at this URL
+    and the "Last updated" date above will be revised. Continued use of the extension
+    after a policy change constitutes acceptance of the updated terms.
+  </p>
+
+  <h2>7. Contact</h2>
+  <p>
+    Questions or concerns about this privacy policy can be directed to the project's
+    GitHub repository:
+    <a href="https://github.com/MatthewDawkins/security-portfolio/tree/main/project-04-eidolon"
+       target="_blank" rel="noopener">
+      github.com/MatthewDawkins/security-portfolio
+    </a>
+  </p>
+
+</main>
+
+<footer>
+  Eidolon Privacy Policy &mdash; No personal data collected, no data transmitted.
+</footer>
+
+</body>
+</html>
