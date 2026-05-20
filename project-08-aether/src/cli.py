@@ -40,7 +40,7 @@ BANNER = r"""
   / _ \ / _ \ | __| '_ \ / _ \ '__|
  / ___ \  __/ | |_| | | |  __/ |
 /_/   \_\___|  \__|_| |_|\___|_|
-  AWS cloud security scanner
+  AWS & Web Security Scanner  |  Bill C-22 Compliance Module
 """
 
 SEVERITY_STYLE = {
@@ -84,6 +84,13 @@ CHECK_CATALOG = [
     ("STR-DNS-001", "high",     "Missing or Permissive SPF Record"),
     ("STR-DNS-002", "high",     "Missing or Unenforced DMARC Record"),
     ("STR-DNS-003", "low",      "Missing CAA Record"),
+    # C-22 (Bill C-22 Lawful Access Act — Canadian compliance)
+    ("C22-WEB-001", "high",     "Missing or Permissive Referrer-Policy Header"),
+    ("C22-WEB-002", "high",     "Third-Party Tracking Scripts Detected"),
+    ("C22-WEB-003", "high",     "Persistent Tracking Cookies Without SameSite=Strict"),
+    ("C22-WEB-004", "high",     "Geolocation API Not Restricted (Permissions-Policy)"),
+    ("C22-WEB-005", "medium",   "No Accessible Privacy Policy Page Detected"),
+    ("C22-WEB-006", "info",     "Third-Party CDN / Infrastructure Detected (Data Residency Risk)"),
 ]
 
 
@@ -231,7 +238,7 @@ def _cmd_checks(_args):
         table.add_row(check_id, _severity_text(severity), title)
 
     console.print(table)
-    console.print(f"  [dim]{len(CHECK_CATALOG)} checks across IAM, S3, EC2, RDS, CloudTrail, VPC[/dim]\n")
+    console.print(f"  [dim]{len(CHECK_CATALOG)} checks across IAM, S3, EC2, RDS, CloudTrail, VPC, Web, DNS, and Bill C-22 compliance[/dim]\n")
 
 
 def main():

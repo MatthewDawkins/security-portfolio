@@ -26,6 +26,20 @@ TIMEOUT = 10
 HEADERS = {"User-Agent": "Aether-Security-Scanner/1.0"}
 
 
+def _csp_directive_has(csp: str, directive: str, keyword: str) -> bool:
+    """Return True if `keyword` appears within the named CSP `directive`.
+
+    Parses directive boundaries so that a keyword in one directive (e.g.
+    'unsafe-inline' in style-src) does not produce a match for a different
+    directive (e.g. script-src).
+    """
+    for part in csp.split(";"):
+        tokens = part.strip().lower().split()
+        if tokens and tokens[0] == directive.lower() and keyword.lower() in tokens:
+            return True
+    return False
+
+
 def _hostname(url: str) -> str:
     return urlparse(url).hostname or url
 
@@ -217,8 +231,11 @@ class WebChecks(BaseCheck):
                 mitre_tactic="Execution",
                 mitre_name="Command and Scripting Interpreter - JavaScript",
             )]
-        # Warn on unsafe-inline in script-src
-        if "unsafe-inline" in csp.lower() and "script-src" in csp.lower():
+            # Warn on unsafe-inline specifically within the script-src directive.
+        # Parse directive boundaries so that 'unsafe-inline' in style-src does
+        # not produce a false positive (style injection is significantly lower
+        # risk than script injection and is often unavoidable with CSS-in-JS).
+        if _csp_directive_has(csp, "script-src", "'unsafe-inline'"):
             return [Finding(
                 check_id="STR-WEB-003",
                 title="Content-Security-Policy Allows unsafe-inline Scripts",

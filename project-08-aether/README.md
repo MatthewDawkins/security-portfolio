@@ -1,14 +1,14 @@
-# Aether — AWS Cloud Security Scanner
+# Aether — AWS & Web Security Scanner + Bill C-22 Compliance Module
 
-> A Python CLI that scans AWS accounts for misconfigurations across IAM, S3, EC2, RDS, CloudTrail, and VPC — surfaces findings with severity rankings, MITRE ATT&CK mapping, and remediation guidance — and generates a self-contained dark-theme HTML report.
+> A Python CLI that scans AWS accounts and web/DNS infrastructure for misconfigurations — and includes a dedicated Bill C-22 (Lawful Access Act) compliance module that identifies metadata collection, tracking, and data residency risks for Canadian electronic service providers. Every finding is severity-ranked with actionable remediation guidance.
 
 ---
 
 ## What It Does
 
-Aether calls the AWS API via boto3, evaluates the account configuration against 21 security checks, and produces a terminal findings table and an HTML report. Every finding includes a full description of the risk, actionable remediation steps, and a MITRE ATT&CK technique mapping where applicable.
+Aether covers three scan surfaces: AWS infrastructure (via boto3), web/DNS configuration (live HTTP/TLS/DNS probes), and Bill C-22 compliance (metadata and privacy controls). Every finding includes a full risk description, remediation steps, and MITRE ATT&CK mapping where applicable.
 
-| Service | Checks | Coverage |
+| Surface | Checks | Coverage |
 |---|---|---|
 | **IAM** | 6 | Root MFA, root access keys, users without MFA, stale access keys (90+ days), AdministratorAccess policy, weak password policy |
 | **S3** | 4 | Public ACL, Block Public Access disabled, no server-side encryption, no versioning |
@@ -16,25 +16,47 @@ Aether calls the AWS API via boto3, evaluates the account configuration against 
 | **RDS** | 2 | Publicly accessible instance, unencrypted storage |
 | **CloudTrail** | 3 | Not enabled in region, log file validation disabled, not multi-region |
 | **VPC** | 2 | Default VPC in use, flow logs not enabled |
+| **Web** | 8 | HTTPS enforcement, HSTS, CSP, X-Frame-Options, X-Content-Type-Options, server disclosure, CORS wildcard, TLS expiry |
+| **DNS** | 3 | SPF, DMARC, CAA records |
+| **C-22** | 6 | Referrer-Policy, third-party trackers, persistent cookies, geolocation permissions, privacy policy, CDN data residency |
+
+---
+
+## Bill C-22 Compliance Module
+
+Bill C-22 (the *Lawful Access Act*, introduced March 2026) requires Canadian electronic service providers to retain transmission metadata for up to one year and build technical capabilities for law enforcement access on demand. The C-22 module helps businesses understand what metadata they currently collect, what third parties receive it, and where privacy controls are missing.
+
+| Check ID | Severity | What It Detects |
+|---|---|---|
+| C22-WEB-001 | HIGH | Missing or permissive Referrer-Policy — navigation URL data leaking to third parties |
+| C22-WEB-002 | HIGH | Third-party tracking scripts (Google Analytics, Meta Pixel, Hotjar, etc.) loading user metadata |
+| C22-WEB-003 | HIGH | Persistent cookies (30+ day max-age) without SameSite=Strict — retained user identifiers |
+| C22-WEB-004 | HIGH | Geolocation API unrestricted via Permissions-Policy — location metadata collectible by scripts |
+| C22-WEB-005 | MEDIUM | No accessible privacy policy page — transparency obligations not met |
+| C22-WEB-006 | INFO | US-based CDN/infrastructure detected — cross-border data residency risk |
+
+The C-22 module runs automatically whenever a `--url` is provided. No AWS credentials required.
 
 ---
 
 ## Demo Output
 
-Against the included mock dataset (simulating a small startup account with common misconfigurations):
+Against the included mock dataset (simulating a startup account with common misconfigurations + C-22 exposure):
 
 ```
-21 findings.
+26 findings.
 
-CRITICAL: 4   HIGH: 8   MEDIUM: 7   LOW: 2   Total: 21
+CRITICAL: 4   HIGH: 11   MEDIUM: 8   LOW: 2   INFO: 1   Total: 26
 
-STR-IAM-001  CRITICAL  IAM          root                           Root Account MFA Not Enabled
-STR-S3-001   CRITICAL  S3           acme-company-backups-2023      S3 Bucket Publicly Accessible via ACL
-STR-EC2-003  CRITICAL  EC2          sg-0f3e2d1c4b (legacy-test)    Security Group Allows All Traffic from Internet
-STR-RDS-001  CRITICAL  RDS          prod-mysql-01                  RDS Instance Publicly Accessible
-STR-CT-001   HIGH      CloudTrail   eu-west-1                      CloudTrail Not Enabled in Region
-STR-EC2-001  HIGH      EC2          sg-0a1b2c3d4e (web-servers)    Security Group Allows SSH from Internet
-STR-IAM-005  HIGH      IAM          legacy-admin                   IAM User Has AdministratorAccess Policy
+STR-IAM-001  CRITICAL  IAM    root              Root Account MFA Not Enabled
+STR-S3-001   CRITICAL  S3     acme-backups      S3 Bucket Publicly Accessible via ACL
+STR-EC2-003  CRITICAL  EC2    sg-0f3e2d1c4b     Security Group Allows All Traffic from Internet
+STR-RDS-001  CRITICAL  RDS    prod-mysql-01     RDS Instance Publicly Accessible
+C22-WEB-001  HIGH      C-22   acme-corp.ca      Missing or Permissive Referrer-Policy Header
+C22-WEB-002  HIGH      C-22   acme-corp.ca      Third-Party Tracking Scripts Detected
+C22-WEB-004  HIGH      C-22   acme-corp.ca      Geolocation API Not Restricted
+C22-WEB-005  MEDIUM    C-22   acme-corp.ca      No Accessible Privacy Policy Page Detected
+C22-WEB-006  INFO      C-22   acme-corp.ca      Third-Party Infrastructure: Cloudflare (US-based CDN)
 ...
 ```
 
@@ -53,13 +75,16 @@ aether.py
     ├── models.py       # Finding dataclass with severity ranking
     ├── mock.py         # Pre-built findings for demo mode (no credentials required)
     └── checks/
-        ├── base.py     # BaseCheck ABC
-        ├── iam.py      # 6 IAM checks
-        ├── s3.py       # 4 S3 checks
-        ├── ec2.py      # 4 EC2/security group checks
-        ├── rds.py      # 2 RDS checks
+        ├── base.py       # BaseCheck ABC
+        ├── iam.py        # 6 IAM checks
+        ├── s3.py         # 4 S3 checks
+        ├── ec2.py        # 4 EC2/security group checks
+        ├── rds.py        # 2 RDS checks
         ├── cloudtrail.py # 3 CloudTrail checks
-        └── vpc.py      # 2 VPC checks
+        ├── vpc.py        # 2 VPC checks
+        ├── web.py        # 8 web/TLS/header checks
+        ├── dns.py        # 3 DNS checks (SPF, DMARC, CAA)
+        └── c22.py        # 6 Bill C-22 compliance checks
 ```
 
 ### Key Design Decisions
@@ -94,13 +119,19 @@ python aether.py scan --mock
 # Demo mode with HTML report
 python aether.py scan --mock --output reports/aether-demo.html
 
+# Bill C-22 compliance scan — URL only, no AWS credentials needed
+python aether.py scan --url https://yoursite.ca --output reports/c22-report.html
+
+# Full scan: AWS + web/DNS + C-22
+python aether.py scan --url https://yoursite.ca --region ca-central-1 --profile prod-readonly --output report.html
+
 # Live scan — uses default AWS credentials
 python aether.py scan --output reports/my-account.html
 
 # Specify region and credentials profile
 python aether.py scan --region eu-west-1 --profile prod-readonly --output report.html
 
-# List all available checks
+# List all available checks (including C-22 module)
 python aether.py checks
 ```
 

@@ -491,4 +491,125 @@ MOCK_FINDINGS = [
             "Delete the default VPC after migration to prevent accidental deployments into it."
         ),
     ),
+
+    # ── C-22 (Bill C-22 Lawful Access Act) ───────────────────────────────────
+
+    Finding(
+        check_id="C22-WEB-001",
+        title="Missing or Permissive Referrer-Policy Header",
+        severity="high",
+        service="C-22",
+        resource_type="Website",
+        resource_id="acme-corp.ca",
+        region="web",
+        description=(
+            "'acme-corp.ca' has no Referrer-Policy header set. Browsers default to "
+            "'no-referrer-when-downgrade', which sends the full page URL as the Referer "
+            "header to every HTTPS third-party resource loaded by your site — including "
+            "analytics services, CDN assets, and ad networks. "
+            "Under Bill C-22, navigation URL data is classified as 'transmission data' — "
+            "a category that electronic service providers may be required to retain for up "
+            "to one year and disclose to law enforcement on demand."
+        ),
+        recommendation=(
+            "Set the header to restrict referrer leakage:\n"
+            "  Referrer-Policy: no-referrer\n"
+            "Or, for analytics compatibility that still protects path-level data:\n"
+            "  Referrer-Policy: strict-origin-when-cross-origin"
+        ),
+    ),
+
+    Finding(
+        check_id="C22-WEB-002",
+        title="Third-Party Tracking Scripts Detected",
+        severity="high",
+        service="C-22",
+        resource_type="Website",
+        resource_id="acme-corp.ca",
+        region="web",
+        description=(
+            "'acme-corp.ca' loads third-party tracking scripts from: "
+            "googletagmanager.com, hotjar.com. "
+            "These services receive user metadata — including IP addresses, session timing, "
+            "device identifiers, and browsing behaviour — directly from your users' browsers. "
+            "Under Bill C-22, this metadata may be retained by those third parties (both "
+            "US-based) and subject to US law enforcement disclosure independently of any "
+            "Canadian legal process."
+        ),
+        recommendation=(
+            "Audit whether each tracking service is necessary for core functionality. "
+            "Consider self-hosted analytics (Plausible, Umami, Matomo) that keep data "
+            "within Canadian jurisdiction. Remove trackers that are not strictly required. "
+            "Disclose all remaining data flows in your privacy policy."
+        ),
+    ),
+
+    Finding(
+        check_id="C22-WEB-004",
+        title="Geolocation API Not Restricted — Permissions-Policy Missing",
+        severity="high",
+        service="C-22",
+        resource_type="Website",
+        resource_id="acme-corp.ca",
+        region="web",
+        description=(
+            "'acme-corp.ca' does not set a Permissions-Policy header. Any script on the "
+            "page — including third-party analytics — can request the user's device location "
+            "via the browser Geolocation API without restriction. "
+            "Device location data is explicitly named in Bill C-22 as retainable transmission "
+            "metadata: the bill allows government to mandate retention of 'information that "
+            "identifies the location of the device,' enabling reconstruction of physical "
+            "movements over a one-year period."
+        ),
+        recommendation=(
+            "Add: Permissions-Policy: geolocation=(), camera=(), microphone=()\n"
+            "If geolocation is required for core functionality, restrict to your origin:\n"
+            "  Permissions-Policy: geolocation=(self)"
+        ),
+    ),
+
+    Finding(
+        check_id="C22-WEB-005",
+        title="No Accessible Privacy Policy Page Detected",
+        severity="medium",
+        service="C-22",
+        resource_type="Website",
+        resource_id="acme-corp.ca",
+        region="web",
+        description=(
+            "No privacy policy page was found at common paths on 'acme-corp.ca' "
+            "(/privacy, /privacy-policy, /legal/privacy, etc.). "
+            "Bill C-22 and PIPEDA require electronic service providers to disclose their "
+            "data collection, retention, and disclosure practices to users. Without an "
+            "accessible privacy policy, this site cannot meet the transparency obligations "
+            "that accompany C-22's metadata retention regime."
+        ),
+        recommendation=(
+            "Publish a privacy policy describing what metadata you collect, retention "
+            "periods, third-party data processors, and how users can request deletion. "
+            "Link it from the site footer and all signup flows."
+        ),
+    ),
+
+    Finding(
+        check_id="C22-WEB-006",
+        title="Third-Party Infrastructure Detected: Cloudflare (US-based CDN)",
+        severity="info",
+        service="C-22",
+        resource_type="Website",
+        resource_id="acme-corp.ca",
+        region="web",
+        description=(
+            "'acme-corp.ca' is served through Cloudflare (US-based CDN), identified via "
+            "CF-Ray response headers. Under Bill C-22, a ministerial disclosure order "
+            "would be directed at your organization — but your users' data exposure depends "
+            "on where Cloudflare stores and processes request metadata (IPs, timestamps, "
+            "request paths). US-based providers are subject to FISA 702 and National "
+            "Security Letters independently of any Canadian legal process."
+        ),
+        recommendation=(
+            "Review Cloudflare's data residency options (Data Localization Suite). "
+            "Document your CDN provider and data flows in your privacy policy."
+        ),
+    ),
 ]

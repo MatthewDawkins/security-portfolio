@@ -15,6 +15,7 @@ from src.checks.cloudtrail import CloudTrailChecks
 from src.checks.vpc import VPCChecks
 from src.checks.web import WebChecks
 from src.checks.dns import DNSChecks
+from src.checks.c22 import C22Checks
 from src.models import Finding
 
 AWS_MODULES = [
@@ -29,6 +30,7 @@ AWS_MODULES = [
 WEB_MODULES = [
     WebChecks,
     DNSChecks,
+    C22Checks,
 ]
 
 
